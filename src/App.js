@@ -1,137 +1,117 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { HashRouter, BrowserRouter, Route, Link } from "react-router-dom";
 import axios from "axios";
-import Profile from "./components/profile";
-import OtherProfile from "./components/otherProfile";
-import Uploader from "./components/uploader";
-import FindPeople from "./components/findPeople";
-import Header from "./components/header";
-import FriendsList from "./components/friendsList";
-import Chatting from "./components/chatting";
-
-///////////// this one is for using HOOKS
-// import { useState, useEffect } from "react";
+import Boxes from "./components/boxes";
+import New from "./components/new";
+import New_seasons from "./components/new_seasons";
+import Leaving from "./components/leaving";
+import { log } from "util";
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { uploader: false };
-        this.toggleUploader = this.toggleUploader.bind(this);
-        this.uploadPic = this.uploadPic.bind(this);
-        this.handleFileChange = this.handleFileChange.bind(this);
+        this.state = { days1: 0, days2: 0 };
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.searchNew = this.searchNew.bind(this);
     }
 
     componentDidMount() {
-        axios.get("/user").then(results => {
-            this.setState(results.data[0]);
-        });
-    }
-
-    toggleUploader() {
-        this.state.uploader
-            ? this.setState({ uploader: false })
-            : this.setState({ uploader: true });
-    }
-
-    handleFileChange(e) {
-        this.setState({ file: e.target.files[0] });
-    }
-
-    uploadPic() {
-        var formData = new FormData();
-        formData.append("file", this.state.file);
-
-        axios
-            .post("/upload", formData)
-            .then(resp => {
-                console.log("picture uploaded", resp.data);
-                this.setState({
-                    imgurl: resp.data,
-                    file: null,
-                    uploader: false
-                });
-            })
-            .catch(function(err) {
-                console.log("Error when uploading picture", err);
-            });
+        // axios.get("/user").then(results => {
+        //     this.setState(results.data[0]);
+        // });
     }
 
     handleChange(e) {
-        this.setState({ bio: e.target.value });
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        axios.post("/updatebio", { bio: this.state.bio });
+    searchNew() {
+        let data;
+        axios.post("/new_items", { days1: this.state.days1 }).then(response => {
+            // console.log("response from backend", response.data.length);
+            this.setState({ dataNew: response.data });
+        });
     }
 
     render() {
         return (
-            <div>
-                {this.state.first && (
+            <React.Fragment>
+                <BrowserRouter>
                     <div>
-                        <BrowserRouter>
-                            <div>
-                                <Header
-                                    first={this.state.first}
-                                    last={this.state.last}
-                                    imgurl={this.state.imgurl}
-                                />
-                                <Route
-                                    exact
-                                    path="/"
-                                    render={() => (
-                                        <Profile
-                                            first={this.state.first}
-                                            last={this.state.last}
-                                            email={this.state.email}
-                                            bio={this.state.bio}
-                                            imgurl={this.state.imgurl}
-                                            created_at={this.state.created_at}
-                                            toggle={this.toggleUploader}
-                                            handleChange={this.handleChange}
-                                            handleSubmit={this.handleSubmit}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path="/user/:id"
-                                    render={props => (
-                                        <OtherProfile
-                                            key={props.match.url}
-                                            match={props.match}
-                                            history={props.history}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path="/users"
-                                    render={props => <FindPeople />}
-                                />
-                                <Route
-                                    path="/chat"
-                                    render={props => <Chatting />}
-                                />
-                                <Route
-                                    path="/friends"
-                                    render={props => <FriendsList />}
-                                />
-                            </div>
-                        </BrowserRouter>
-                        {this.state.uploader && (
-                            <Uploader
-                                toggle={this.toggleUploader}
-                                upload={this.uploadPic}
-                                file={this.handleFileChange}
+                        <div className="menu">
+                            <h2
+                                onClick={() =>
+                                    this.setState({ days1: 0, days2: 0 })
+                                }
+                            >
+                                <Link to="/welcome">Home</Link>
+                            </h2>
+                        </div>
+                        <div>
+                            <Route
+                                path="/welcome"
+                                render={() => (
+                                    <Boxes
+                                        days1={this.state.days1}
+                                        days2={this.state.days2}
+                                        handleChange={this.handleChange}
+                                        searchNew={this.searchNew}
+                                    />
+                                )}
                             />
-                        )}
+                            <Route
+                                path="/new"
+                                render={() => (
+                                    <New
+                                        days1={this.state.days1}
+                                        dataNew={this.state.dataNew}
+                                    />
+                                )}
+                            />
+                            <Route path="/leaving" render={() => <Leaving />} />
+                            <Route
+                                path="/new_seasons"
+                                render={() => (
+                                    <New_seasons days2={this.state.days2} />
+                                )}
+                            />
+                        </div>
                     </div>
-                )}
-            </div>
+                </BrowserRouter>
+            </React.Fragment>
         );
     }
 }
+{
+    /* 
+<div
+    onMouseOver={() => this.setState({ bool: true })}
+    onMouseOut={() => this.setState({ bool: false })}
+>
+    {this.state.bool ? (
+        <span>[OPTION1] show after onMouseEnter</span>
+    ) : (
+        <div>[OPTION2] show after onMouseLeave</div>
+    )}
+</div>; */
+}
 
 export default App;
+
+{
+    /* <BrowserRouter>
+<Route exact path="/new" render={() => <New />} />
+<Route exact path="/leaving" render={() => <Leaving />} />
+<Route
+    exact
+    path="/newseasons"
+    render={() => <New_seasons />}
+/>
+</BrowserRouter> */
+}
+
+{
+    /* <Link to={`/`}>
+    <p className="menuHeader">Profile</p>
+</Link>; */
+}

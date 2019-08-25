@@ -1,696 +1,196 @@
-@import url("https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Luckiest+Guy&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+HK&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Acme&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Acme|Gamja+Flower&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap");
-
-/* Celeste     #a9eee6
-Crema       #fefaec
-Rojo        #f38181
-Marron      #625772 */
+@import url("https://fonts.googleapis.com/css?family=Teko&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Rubik+Mono+One&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Arimo&display=swap");
 
 body {
     margin: 0;
-    background: #fefaec;
+    background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.1) 100%
+        ),
+        url("background.jpg");
 }
 
-a:link {
-    text-decoration: none;
-    color: black;
-}
-
-/* a:active {
-    color: black;
-} */
-
-a:visited {
-    color: black;
-}
-
-/* ///////////////////////////////// Wrapper login and register masks */
-
-.wrapperCont {
-    display: inline-flex;
-    height: 100vh;
-    align-items: center;
-    background: #a9eee6;
-    margin: 0;
-}
-
-.wrapperLogo {
-    width: 50vw;
-    height: auto;
-}
-
-.registLoginMasks {
-    width: 50vw;
-    height: auto;
-}
-
-/* ///////////////////////////////// Main logo for register and login masks */
-
-.mainLogo {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-}
-
-.textLogo {
-    font-family: "Luckiest Guy", cursive;
-    font-size: 50px;
-    height: auto;
-    width: 500px;
-    margin: 0;
-}
-#gang {
-    text-align: right;
-}
-
-#pawLogo {
-    width: 300px;
-    height: 300px;
-}
-
-#paragLogo {
-    font-family: "Gloria Hallelujah", cursive;
-    align-self: flex-end;
-}
-
-.menuContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.menuHeader {
-    font-family: "Luckiest Guy", cursive;
-    font-size: 20px;
-    color: black;
-    height: auto;
-    margin: 40px;
-    letter-spacing: 1px;
-}
-
-/* ///////////////////////////////s///////// Login and registration masks */
-
-.formBody {
-    margin-left: 120px;
-}
-
-.formElement {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: 250px;
-    margin: 10px;
-}
-
-.label {
-    width: 100px;
-    font-family: "Noto Sans HK", sans-serif;
-}
-
-.formField {
-    background: #e1f9f6;
-    width: 180px;
-    border: transparent;
-    border-radius: 5px;
-    height: 25px;
-}
-
-.buttonContainer {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-}
-
-.submitButton {
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: auto;
-    width: 80px;
-    margin: 5px;
-}
-
-.loginLink {
-    font-family: "Noto Sans HK", sans-serif;
-    margin: 5px;
-    text-decoration: none;
-}
-
-.errorMsg {
-    color: red;
-    font-family: "Arial";
-    font-style: oblique;
-    margin: 0;
-    padding: 0;
-}
-
-/* ////////////////////////////////////////////// Header */
-
-.headerContainer {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: #a9eee6;
+.menu {
     width: 100vw;
-    height: 170px;
+    height: 10vh;
 }
 
-.headerLogo {
-    margin-left: 10px;
-    margin-top: 10px;
-    height: 140px;
-}
-
-.textHeaderLogo {
-    margin: 5px;
-    width: 100px;
-    font-family: "Luckiest Guy", cursive;
-}
-
-#pawHeaderLogo {
-    height: 100px;
-    width: 100px;
-    margin-left: 10px;
-}
-
-.headerPicContainer {
-    margin-right: 10px;
-
-    width: 130px;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}
-
-.headerPic {
-    height: 100px;
-    width: 100px;
-    border: transparent;
-    border-radius: 50%;
-}
-
-.headerMessage {
-    font-family: "Luckiest Guy", cursive;
-    margin: 5px;
-}
-
-/* /////////////////////////////////////////// Profile  */
-
-.profileContainer {
-    background: #fefaec;
+.boxContainer {
     display: inline-flex;
-    justify-content: center;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 75vh;
+    height: 90vh;
 }
 
-.profilePicContainer {
-    width: 27vw;
-    min-height: 450px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #f38181;
-    border: transparent;
-    border-radius: 10px;
-    margin-right: 25px;
-}
-
-.profilePic {
-    width: 200px;
-    height: auto;
-    margin-top: 15px;
-}
-
-.nameProfPic {
-    font-family: "Acme", sans-serif;
-    letter-spacing: 1px;
-    font-size: 25px;
-    margin-top: 15px;
-    text-align: center;
-}
-
-/* ////////////////////////////////////// Bio text  profile */
-
-.bioContainer {
-    width: 55vw;
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}
-
-.bioInsideContainer {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.bioTextContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#bioTextArea {
-    background: #62577296;
-    font-family: "Roboto Mono", monospace;
-    font-size: 20px;
-    width: 630px;
-    height: 166px;
-    border: transparent;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.bioText {
-    background: #625772;
-    color: white;
-    font-family: "Roboto Mono", monospace;
-    border: transparent;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 20px;
-    width: 100%;
-    height: auto;
-}
-
-#saveBio {
-    width: 100px;
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: 25px;
-    background: #f38181;
-    margin: 5px;
-    border-radius: 5px;
-    border: transparent;
-}
-
-.otherProfBio {
-    width: 90%;
-}
-
-/* /////////////////////////////////////// Search other profiles */
-
-.searchArea {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-}
-
-.searchLabel {
-    width: 175px;
-    font-family: "Noto Sans HK", sans-serif;
-}
-
-.searchFormField {
-    background: #e1f9f6;
-    width: 200px;
-    border: transparent;
-    border-radius: 5px;
-    height: 25px;
+.box {
+    width: 350px;
+    height: 430px;
     margin: 30px;
-}
-
-.searchResults {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100vw;
-    justify-content: center;
-}
-
-.searchProfilePicContainer {
-    width: 27vw;
-    min-height: 400px;
-    height: auto;
+    border: 5px solid black;
+    background: black;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    background: #f38181;
-    border: transparent;
     border-radius: 10px;
-    margin-left: 60px;
-    margin-bottom: 50px;
 }
 
-.searchNameProfPic {
-    font-family: "Acme", sans-serif;
+.boxText {
+    text-align: center;
+    font-family: "Teko", sans-serif;
+    font-weight: bolder;
+    letter-spacing: 2.5px;
+    font-size: 55px;
+    color: red;
+}
+
+.boxMenu {
+    position: fixed;
+    z-index: 100;
+    width: 350px;
+    height: 430px;
+    border: 5px solid red;
+    background: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.boxMenu1 {
+    left: 40px;
+}
+
+.boxMenu2 {
+    left: 460px;
+}
+
+.boxMenu3 {
+    left: 880px;
+}
+
+.boxText2 {
+    text-align: center;
+    font-family: "Teko", sans-serif;
+    font-weight: bolder;
     letter-spacing: 1px;
-    font-size: 25px;
-    margin-top: 15px;
-}
-
-/* ////////////////////////////////////////    Chat windows */
-
-.onlineTitle {
-    font-family: "Luckiest Guy", cursive;
-    text-align: center;
-    font-size: 25px;
-    color: #f38181;
-}
-
-.dot {
-    height: 20px;
-    width: 20px;
-    background-color: greenyellow;
-    border-radius: 50%;
-    margin: 10px;
-}
-
-.onlineUsers {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 27vw;
-    overflow-y: scroll;
-}
-
-.onlineUser {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 10px;
-}
-
-.onlineProfilePic {
-    height: 120px;
-    width: 100px;
-    border-radius: 5px;
-}
-
-.onlineName {
-    font-family: "Acme", sans-serif;
-    font-size: 25px;
-    margin-left: 15px;
-}
-
-.chatsContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    height: 75vh;
-    width: 100vw;
-}
-
-.chatWindow {
-    margin: 0;
-    overflow-y: scroll;
-    /* position: fixed; */
-    /* right: 10%;
-    top: 42%; */
-    background: #a9eee682;
-    background-size: 100%;
-    height: 100%;
-    border: transparent;
-    border-radius: 5px;
-    width: 40vw;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.chatWindow2 {
-    margin-top: 10px;
-}
-
-.noChatMsg {
-    font-family: "Luckiest Guy", cursive;
-    text-align: center;
-    font-size: 25px;
-    color: black;
-}
-
-.privChats {
-    width: 34vw;
-    background: #f38181a1;
-    margin-top: 0;
-}
-
-.privChatWindow {
-    margin: 0;
-    margin-top: 10px;
-    overflow-y: scroll;
-    position: fixed;
-    /* right: 10%;
-    top: 42%; */
-    background: #f38181a1;
-    background-size: 100%;
-    height: 75%;
-    border: transparent;
-    border-radius: 5px;
-    width: 34vw;
-    z-index: 50;
-}
-
-.chatPicName {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.chatProfilePic {
-    height: 30px;
-    width: 25px;
-    border-radius: 5px;
-    margin-left: 15px;
-}
-
-.chatName {
-    margin: 0;
-    margin-left: 10px;
-    font-family: "Acme", sans-serif;
-}
-
-.chatText {
-    font-family: "Noto Sans HK", sans-serif;
-    margin: 10px;
-}
-
-.chatDate {
-    font-family: "Noto Sans HK", sans-serif;
-    font-size: 10px;
-    font-weight: bolder;
-    font-style: italic;
-    text-align: right;
-    margin: 10px;
-}
-
-.chatInput {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.chatTextArea {
-    border-radius: 5px;
-    border: transparent;
-    margin: 15px;
-    width: 60%;
-    font-family: "Noto Sans HK", sans-serif;
-    margin: 10px;
-}
-.boxUploader {
-    width: 450px;
-    height: 200px;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    align-items: center;
-    background: #a9eee6;
-    border: transparent;
-    border-radius: 10px;
-    font-family: "Noto Sans HK", sans-serif;
-}
-
-#closeUploader {
-    margin: 0;
-    margin-right: 20px;
-    align-self: flex-end;
-}
-
-.boxUploader h3 {
-    margin-top: 0;
-}
-
-/* ////////////////////////////////////// Profile buttons */
-
-.editAddBioButton {
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: 25px;
-    width: 80px;
-    margin: 5px;
-    margin-bottom: 25px;
-    background: #f38181;
-    border-radius: 5px;
-    border: transparent;
-}
-
-.deleteLogContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 94%;
-}
-
-#deleteProfButton {
-    width: 100px;
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: 25px;
-    background: #f38181;
-    margin: 5px;
-    border-radius: 5px;
-    border: transparent;
-}
-
-#logoutProfButton {
-    width: 100px;
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: 25px;
-    background: #f38181;
-    margin: 5px;
-    border-radius: 5px;
-    border: transparent;
-}
-
-.addFriendButton {
-    width: 106px;
-    font-family: "Noto Sans HK", sans-serif;
-    font-weight: bolder;
-    height: 41px;
-    background: #f38181;
-    margin: 5px;
-    margin-top: 31px;
-    border-radius: 5px;
-    border: transparent;
-}
-
-/* /////////////////////////////////////// Uploader popup */
-
-.overlay {
-    margin: 0;
-    overflow-y: scroll;
-    position: fixed;
-    right: 0;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
-    background-size: 100%;
-    height: 100vh;
-    min-height: 100vh;
-    width: 100vw;
-    z-index: 50;
-    display: fixed;
-    justify-content: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.boxUploader {
-    width: 450px;
-    height: 200px;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    align-items: center;
-    background: #a9eee6;
-    border: transparent;
-    border-radius: 10px;
-    font-family: "Noto Sans HK", sans-serif;
-}
-
-#closeUploader {
-    margin: 0;
-    margin-right: 20px;
-    align-self: flex-end;
-}
-
-.boxUploader h3 {
-    margin-top: 0;
-}
-
-/* /////////////////////////////////// People finder page */
-
-.findPeopleContainer {
-    background: #fefaec;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* ///////////////////////////////////// Friendslist page */
-
-.friendsPageContainer {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: row;
-    width: 100vw;
-}
-
-.friendsListProfContainer {
-    margin-bottom: 40px;
-    margin-left: 20px;
-}
-
-.titleFriendsList {
-    font-family: "Luckiest Guy", cursive;
-    text-align: center;
     font-size: 40px;
-    letter-spacing: 2px;
-    color: #625772;
+    color: white;
+    margin: 0;
+}
+.boxText3 {
+    font-size: 30px;
+    margin-bottom: 0;
+    z-index: 80;
 }
 
-.friendsButtonContainer {
-    display: flex;
+.numberDays {
+    border-radius: 5px;
+    border: transparent;
+    height: 35px;
+    width: 45px;
+    font-family: "Teko", sans-serif;
+    text-align: center;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-size: 30px;
+    margin-left: 5px;
+    padding-left: 5px;
+    margin-right: 5px;
+}
+
+.buttonGo {
+    width: 56px;
+    height: 36px;
+    background: black;
+    color: red;
+    text-align: center;
+    font-family: "Teko", sans-serif;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-size: 26px;
+    border-radius: 5px;
+    border: transparent;
+    padding: 0;
+    margin-right: 25px;
+    align-self: flex-end;
+    margin-top: 100px;
+}
+
+.buttonGo2 {
+    margin-top: 145px;
+}
+
+.resultsContainer {
+    margin: 0;
+    background: #6c0107;
+    width: 100vw;
+    min-height: 100vh;
+    display: inline-flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.friendsPageButton {
-    background: #a9eee6;
-}
-
-.acceptedFriendProfile {
-    background: #a9eee6;
+.itemContainer {
+    width: 350px;
+    height: auto;
+    min-height: 560px;
+    max-height: 570px;
+    border: transparent;
+    background: black;
+    border-radius: 10px;
+    margin: 20px;
+    margin-left: 30px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.acceptedFriendButton {
-    background: #f38181;
+.itemPoster {
+    background: pink;
+    width: auto;
+    max-width: 260px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.itemDescription {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    color: white;
+    font-family: "Arimo", sans-serif;
+    border: transparent;
+}
+
+.itemDescription2 {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+}
+
+.itemDescription3 {
+    margin: 5px;
+}
+
+.itemTitle {
+    font-family: "Rubik Mono One", sans-serif;
+    font-size: 22px;
+    margin: 0px;
+}
+
+.itemTypeRuntime {
+    margin-left: 10px;
+    margin-right: 10px;
 }

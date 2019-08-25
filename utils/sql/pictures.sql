@@ -1,9 +1,0 @@
-DROP TABLE IF EXISTS pictures;
-
-CREATE TABLE pictures
-(
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) NOT null,
-    imgUrl VARCHAR(300),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

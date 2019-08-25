@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const request = require("request");
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -82,236 +83,254 @@ if (process.env.NODE_ENV != "production") {
 
 //////////////////////////////////////////////   Routes
 
-app.post("/register", function(req, res) {
-    var first = req.body.first;
-    var last = req.body.last;
-    var email = req.body.email;
-    var password = req.body.password;
-    bc.hashPassword(password)
-        .then(hash => {
-            db.addUsers(first, last, email, hash)
-                .then(results => {
-                    req.session.usersId = results.rows[0].id;
-                    res.json({ userId: results.rows[0].id });
-                })
-                .catch(err => {
-                    if (err.code == 23505) {
-                        res.json({ error: 23505 });
-                    } else {
-                        res.json({ error: true });
+// app.post("/register", function(req, res) {
+//     var first = req.body.first;
+//     var last = req.body.last;
+//     var email = req.body.email;
+//     var password = req.body.password;
+//     bc.hashPassword(password)
+//         .then(hash => {
+//             db.addUsers(first, last, email, hash)
+//                 .then(results => {
+//                     req.session.usersId = results.rows[0].id;
+//                     res.json({ userId: results.rows[0].id });
+//                 })
+//                 .catch(err => {
+//                     if (err.code == 23505) {
+//                         res.json({ error: 23505 });
+//                     } else {
+//                         res.json({ error: true });
+//                     }
+//                     console.log("Error at addUsers query -->", err);
+//                 });
+//         })
+//         .catch(err => {
+//             res.json({ error: true });
+//             console.log("Error at hashPassword function", err);
+//         });
+// });
+
+// app.post("/login", (req, res) => {
+//     // console.log("req. body for login", req.body);
+
+//     var email = req.body.email;
+//     var password = req.body.password;
+//     db.login(email)
+//         .then(match => {
+//             bc.checkPassword(password, match.rows[0].password)
+//                 .then(doesMatch => {
+//                     if (doesMatch) {
+//                         req.session.usersId = match.rows[0].id;
+//                         res.json({ userId: match.rows[0].id });
+//                     } else {
+//                         res.json({ error: "Password incorrect!" });
+//                     }
+//                 })
+//                 .catch(err => {
+//                     console.log("Error at checkPassword query ->", err);
+//                 });
+//         })
+//         .catch(err => {
+//             res.json({ error: "e-Mail not found!" });
+//             console.log("Error at login query ->", err);
+//         });
+// });
+
+app.post("/new_items", function(req, res) {
+    var days1 = req.body.days1;
+    var country = "DE";
+
+    //      Parameters for Netflix API
+    var headers = {
+        "x-rapidapi-host": "unogs-unogs-v1.p.rapidapi.com",
+        "x-rapidapi-key": "8016ba11b6msh98e71216d87c4f2p12a5d5jsn9b29742620d3"
+    };
+    var options = {
+        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get%3Anew${days1}%3A${country}&p=1&t=ns&st=adv`,
+        method: "GET",
+        headers: headers
+    };
+
+    //      Parameters for ImdB API
+    var headers2 = {
+        "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
+        "x-rapidapi-key": "8016ba11b6msh98e71216d87c4f2p12a5d5jsn9b29742620d3"
+    };
+
+    db.cleanNewTable()
+        .then(
+            request(options, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // console.log("!error NETFLIX && response.statusCode == 200");
+                    let payload = JSON.parse(body);
+                    // console.log("payload from first request", payload);
+
+                    let moviesCount = 0;
+                    let queryCounter = 0;
+                    let moviesPayload = [];
+
+                    for (var i = 0; i < payload.ITEMS.length; i++) {
+                        if (payload.ITEMS[i].imdbid) {
+                            moviesCount++;
+                        }
                     }
-                    console.log("Error at addUsers query -->", err);
-                });
-        })
-        .catch(err => {
-            res.json({ error: true });
-            console.log("Error at hashPassword function", err);
-        });
-});
 
-app.post("/login", (req, res) => {
-    // console.log("req. body for login", req.body);
+                    for (i = 0; i < payload.ITEMS.length; i++) {
+                        if (payload.ITEMS[i].imdbid) {
+                            let netflixId = payload.ITEMS[i].netflixid;
+                            let movieId = payload.ITEMS[i].imdbid;
+                            var options2 = {
+                                url: `https://movie-database-imdb-alternative.p.rapidapi.com/?i=${movieId}&f=json`,
+                                method: "GET",
+                                headers: headers2
+                            };
 
-    var email = req.body.email;
-    var password = req.body.password;
-    db.login(email)
-        .then(match => {
-            bc.checkPassword(password, match.rows[0].password)
-                .then(doesMatch => {
-                    if (doesMatch) {
-                        req.session.usersId = match.rows[0].id;
-                        res.json({ userId: match.rows[0].id });
-                    } else {
-                        res.json({ error: "Password incorrect!" });
+                            request(options2, function(error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    console
+                                        .log
+                                        // "!error at IMDB && response.statusCode == 200"
+                                        ();
+                                    let payload = JSON.parse(body);
+                                    // console.log("body of imdb query", payload);
+                                    // console.log("neflixId", netflixId.length);
+                                    // console.log(
+                                    //     "payload.imdbID",
+                                    //     payload.imdbID.length
+                                    // );
+                                    // console.log(
+                                    //     "payload.Type",
+                                    //     payload.Type.length
+                                    // );
+                                    // console.log(
+                                    //     "payload.Title",
+                                    //     payload.Title.length
+                                    // );
+                                    // console.log(
+                                    //     "payload.Year",
+                                    //     payload.Year.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Runtime",
+                                    //     payload.Runtime.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Genre",
+                                    //     payload.Genre.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Actors",
+                                    //     payload.Actors.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Plot",
+                                    //     payload.Plot.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Language",
+                                    //     payload.Language.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Country",
+                                    //     payload.Country.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.Poster",
+                                    //     payload.Poster.length
+                                    // );
+
+                                    // console.log(
+                                    //     "payload.imdbRating",
+                                    //     payload.imdbRating.length
+                                    // );
+
+                                    db.addNew(
+                                        netflixId,
+                                        payload.imdbID,
+                                        payload.Type,
+                                        payload.Title,
+                                        payload.Year,
+                                        payload.Runtime,
+                                        payload.Genre,
+                                        payload.Actors,
+                                        payload.Plot,
+                                        payload.Language,
+                                        payload.Country,
+                                        payload.Poster,
+                                        payload.imdbRating
+                                    )
+                                        .then(() => {
+                                            db.getNewInfo(netflixId)
+                                                .then(results => {
+                                                    queryCounter++;
+                                                    console.log(
+                                                        "number of movies",
+                                                        moviesCount
+                                                    );
+                                                    moviesPayload.push(
+                                                        results.rows[0]
+                                                    );
+
+                                                    if (
+                                                        queryCounter ==
+                                                        moviesCount
+                                                    ) {
+                                                        console.log(
+                                                            `queryCounter = moviesCount`
+                                                        );
+                                                        // res.json(moviesPayload);
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.log(
+                                                        "Error at the getNewInfo Query",
+                                                        err
+                                                    );
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(
+                                                "Error at creating entry at table",
+                                                err
+                                            );
+                                        });
+                                } else {
+                                    console.log("error", error);
+                                }
+                            });
+                        }
                     }
-                })
-                .catch(err => {
-                    console.log("Error at checkPassword query ->", err);
-                });
-        })
-        .catch(err => {
-            res.json({ error: "e-Mail not found!" });
-            console.log("Error at login query ->", err);
-        });
-});
-
-app.get("/logout", (req, res) => {
-    req.session = null;
-    res.redirect("/");
-});
-
-app.get("/delete", (req, res) => {
-    const user = req.session.usersId;
-    console.log("user for deleting profile", user);
-
-    db.getPicsUserDatabase(user).then(results => {
-        // console.log(results.rows);
-        let images = results.rows.map(image => image.imgurl.slice(39));
-        // console.log("images", images);
-        s3.delete(images);
-        db.deletePicsUserDatabase(user).then(() => {
-            db.deleteUserFriendships(user).then(() => {
-                db.deleteUser(user).then(() => {
-                    console.log("user delete in backend");
-                    req.session = null;
-                    res.redirect("/");
-                });
-                // console.log("friendships deleted");
-            });
-        });
-    });
-});
-
-app.get("/user", (req, res) => {
-    db.getUserInfo(req.session.usersId)
-        .then(results => {
-            res.json(results.rows);
-        })
-        .catch(err => {
-            console.log("Error at the getUserInfo Query", err);
-        });
-});
-
-app.get("/otheruser/:id", (req, res) => {
-    const id = req.params.id;
-    if (id == req.session.usersId) {
-        res.json({ error: 1 });
-    } else {
-        db.getUserInfo(id)
-            .then(results => {
-                if (results.rows.length == 0) {
-                    res.json({ error: 2 });
                 } else {
-                    res.json(results.rows);
+                    console.log("error", error);
                 }
             })
-            .catch(err => {
-                console.log("Error at the getUserInfo Query", err);
-            });
-    }
-});
-
-app.get("/users/recent", (req, res) => {
-    db.recentUsers()
-        .then(results => {
-            res.json(results.rows);
-        })
+        )
         .catch(err => {
-            console.log("Error at the recentUsers query", err);
+            console.log("Error at deleting table", err);
         });
 });
 
-app.get("/users/:val", (req, res) => {
-    const val = req.params.val;
+// app.get("/logout", (req, res) => {
+//     req.session = null;
+//     res.redirect("/");
+// });
 
-    if (val) {
-        db.userSearch(val)
-            .then(results => {
-                if (results.rows.length == 0) {
-                    res.json({ error: 2 });
-                } else {
-                    // console.log("results of search", results.rows);
-                    res.json(results.rows);
-                }
-            })
-            .catch(err => {
-                console.log("Error at the userSearch query", err);
-            });
-    } else {
-        res.redirect("/users/recent");
-    }
-});
-
-app.post("/friendship/:id", (req, res) => {
-    const loggedUserId = req.session.usersId;
-    const receiverId = req.params.id;
-    db.searchFriendship(loggedUserId, receiverId).then(results => {
-        if (results.rows.length == 0) {
-            // No frienship or friendship request
-            res.json({ status: 1 });
-        } else {
-            if (results.rows[0].accepted == false) {
-                // No friendship, but there is friendship request
-                if (loggedUserId == results.rows[0].receiver_id) {
-                    // Request sent by the profile owner
-                    res.json({ status: 2 });
-                } else {
-                    // request received by profile owner
-                    res.json({ status: 3 });
-                }
-            } else if (results.rows[0].accepted == true) {
-                // Unfriend
-                res.json({ status: 4 });
-            }
-        }
-    });
-});
-
-app.post("/sendfriendreq/:id", (req, res) => {
-    const senderId = req.session.usersId;
-    const receiverId = req.params.id;
-    db.sendFriendReq(senderId, receiverId).then(results => {
-        if (results.rows.length != 0) {
-            res.json({ success: true });
-        } else {
-            res.json({ success: "" });
-        }
-    });
-});
-
-app.post("/cancelfriendship/:id", (req, res) => {
-    const senderId = req.session.usersId;
-    const receiverId = req.params.id;
-    db.cancelFriendship(senderId, receiverId).then(() => {
-        res.json({ success: true });
-    });
-});
-
-app.post("/acceptfriendship/:id", (req, res) => {
-    const senderId = req.session.usersId;
-    const receiverId = req.params.id;
-    db.acceptFriendship(senderId, receiverId).then(results => {
-        if (results.rows[0].accepted == true) {
-            res.json({ success: true });
-        } else {
-            res.json({ success: "" });
-        }
-    });
-});
-
-app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
-    var url = urlPrefx + req.file.filename;
-    var id = req.session.usersId;
-    db.updateProfilePic(id, url)
-        .then(() => {
-            db.addPicDatabase(id, url);
-            res.json(url);
-        })
-        .catch(err => console.log("Error at UpdateProfilePic", err));
-});
-
-app.post("/updatebio", (req, res) => {
-    var id = req.session.usersId;
-    var bio = req.body.bio;
-    db.updateBio(id, bio)
-        .then(response => res.json(response))
-        .catch(err => console.log("Error at the updateBio query", err));
-});
-
-//////////// REDUX example
-
-app.get("/get-list-animals", (req, res) => {
-    let animals = ["dogs", "cats", "otters", "seagulls"];
-    res.json(animals);
-});
-
-app.get("/friendslist", (req, res) => {
-    const id = req.session.usersId;
-    db.getFriendsList(id).then(results => {
-        console.log("results for getFriendsList query", results.rows);
-        res.json(results.rows);
-    });
-});
+// app.get("/user", (req, res) => {
+//     db.getUserInfo(req.session.usersId)
+//         .then(results => {
+//             res.json(results.rows);
+//         })
+//         .catch(err => {
+//             console.log("Error at the getUserInfo Query", err);
+//         });
+// });
 
 app.get("/welcome", function(req, res) {
     if (req.session.usersId) {
@@ -333,138 +352,4 @@ app.get("*", function(req, res) {
 // it's server, not app, that does the listening
 server.listen(8080, function() {
     console.log("I'm listening.");
-});
-
-//////////////////////////////////////// Socket Events
-const onlineUsers = {};
-function dateFormat(date) {
-    return new Date(date).toLocaleString();
-}
-
-io.on("connection", function(socket) {
-    // console.log(`socket with the id ${socket.id} is now connected`);
-
-    if (!socket.request.session.usersId) {
-        return socket.disconnect(true);
-    }
-    const usersId = socket.request.session.usersId;
-    // console.log(
-    //     `socket with the id ${socket.id} is now connected with user ${usersId}`
-    // );
-    // console.log("online users", onlineUsers);
-
-    const onlineUsersArray = Object.values(onlineUsers);
-
-    const found = onlineUsersArray.find(user => {
-        return user == usersId;
-    });
-
-    if (!found) {
-        onlineUsers[socket.id] = usersId;
-    }
-
-    db.onlineUsersInfo(Object.values(onlineUsers)).then(results => {
-        // console.log("onlineUsersInfo query results", results.rows);
-        // socket.emit("onlineUsers", results.rows); //--> emit does the job
-        io.sockets.emit("userJoinedOrLeft", results.rows);
-    });
-
-    db.getRecentChats().then(results => {
-        // console.log("results for the getRecentChats query", results.rows);
-        results.rows.map(
-            item => (item.created_at = dateFormat(item.created_at))
-        );
-        // console.log("db.getRecentChats", results.rows);
-
-        socket.emit("chatMessages", results.rows.reverse());
-    });
-
-    socket.on("chatMessage", msg => {
-        // console.log("listened to chatMessage event ", msg);
-
-        db.addChatMsg(usersId, msg).then(results => {
-            // console.log("results for addChatMsg", results.rows);
-
-            db.getChatAndUserInfo(usersId, results.rows[0].id).then(results => {
-                results.rows.map(
-                    item => (item.created_at = dateFormat(item.created_at))
-                );
-
-                io.sockets.emit("chatMessage", results.rows[0]);
-            });
-        });
-    });
-
-    socket.on("privateChatUser", user => {
-        // console.log("usersId who is logged in", usersId);
-        // console.log("other user from chat", user);
-        // console.log("online users table", onlineUsers);
-
-        function getSocketIdByUser(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
-        }
-
-        const recipientSocketId = getSocketIdByUser(onlineUsers, user);
-        // console.log(`socketId for user ${user}`, recipientSocketId);
-
-        db.getRecentPrivateChats(usersId, user).then(results => {
-            if (user != usersId) {
-                results.rows.map(
-                    item => (item.created_at = dateFormat(item.created_at))
-                );
-
-                // console.log("recent private chats", results.rows);
-
-                io.sockets.sockets[recipientSocketId].emit(
-                    "privateChatMsgs",
-                    results.rows.reverse()
-                );
-                socket.emit("privateChatMsgs", results.rows);
-            }
-        });
-
-        socket.on("privateChatMessage", msg => {
-            // console.log("listened private to chatMessage event ", msg);
-
-            db.addPrivateChatMsg(usersId, user, msg).then(results => {
-                // console.log("results for addChatMsg", results.rows);
-                db.getPrivateChatAndUserInfo(usersId, results.rows[0].id).then(
-                    results => {
-                        // console.log(
-                        //     "getPrivateChatAndUserInfo results",
-                        //     results.rows[0]
-                        // );
-                        results.rows.map(
-                            item =>
-                                (item.created_at = dateFormat(item.created_at))
-                        );
-                        io.sockets.emit("privateChatMsg", results.rows[0]);
-                    }
-                );
-            });
-        });
-    });
-
-    socket.on("disconnect", function() {
-        // console.log(
-        //     `socket with the id ${
-        //         socket.id
-        //     } is now disconnected with user ${usersId}`
-        // );
-
-        delete onlineUsers[socket.id];
-
-        db.onlineUsersInfo(Object.values(onlineUsers)).then(results => {
-            // console.log("onlineUsersInfo query results", results.rows);
-            socket.emit("onlineUsers", results.rows);
-            io.sockets.emit("userJoinedOrLeft", results.rows);
-        });
-    });
-
-    // socket.on("thanks", function(data) {
-    //     console.log(data);
-    // });
-    // socket.emit("welcome", {
-    //     message: "Welome. It is nice to see you"
-    // });
 });
