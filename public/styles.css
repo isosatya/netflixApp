@@ -221,11 +221,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.popContainer  {
-    position: relative;
-    width: 196px;
+    z-index: 90;
 }
 
 .popAndRating {
@@ -237,6 +233,12 @@ body {
 }
 
 .popcorn {
+    width: 196px;
+    height: auto;
+}
+
+.popAndOverlay {
+    position: relative;
     width: 196px;
     height: auto;
 }
@@ -258,9 +260,9 @@ body {
 
 .watchButton {
     height: 42px;
-    width: 83px;
-    background: red;
-    color: white;
+    width: 87px;
+    background: black;
+    color: red;
     font-family: "Teko", sans-serif;
     font-size: 36px;
     letter-spacing: 1px;
@@ -272,4 +274,5 @@ body {
     margin-right: 23px;
     margin-top: 15px;
     align-self: flex-end;
+    padding-top: 1px;
 }

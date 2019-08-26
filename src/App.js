@@ -27,7 +27,6 @@ class App extends Component {
     }
 
     searchNew() {
-        let data;
         axios.post("/new_items", { days1: this.state.days1 }).then(response => {
             // console.log("response from backend", response.data.length);
             this.setState({ dataNew: response.data });
@@ -35,7 +34,7 @@ class App extends Component {
     }
 
     render() {
-        console.log("this.state", this.state.dataNew);
+        // console.log("this.state at App", this.state.dataNew);
 
         return (
             <React.Fragment>
