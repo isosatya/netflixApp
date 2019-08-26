@@ -6,6 +6,7 @@ import New from "./components/new";
 import New_seasons from "./components/new_seasons";
 import Leaving from "./components/leaving";
 import { log } from "util";
+import { type } from "os";
 
 class App extends Component {
     constructor(props) {
@@ -34,6 +35,8 @@ class App extends Component {
     }
 
     render() {
+        console.log("this.state", this.state.dataNew);
+
         return (
             <React.Fragment>
                 <BrowserRouter>

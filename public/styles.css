@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Teko&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Rubik+Mono+One&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Arimo&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Acme&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
 
 body {
     margin: 0;
@@ -137,6 +139,7 @@ body {
 }
 
 .itemContainer {
+    position: relative;
     width: 350px;
     height: auto;
     min-height: 560px;
@@ -152,13 +155,22 @@ body {
     align-items: center;
 }
 
+.itemFront {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .itemPoster {
     background: pink;
     width: auto;
     max-width: 260px;
     height: auto;
+    margin: 0;
+    margin-top: 10px;
     margin-bottom: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .itemDescription {
@@ -167,7 +179,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    color: white;
+    color: #fff4f4;
     font-family: "Arimo", sans-serif;
     border: transparent;
 }
@@ -188,9 +200,76 @@ body {
     font-family: "Rubik Mono One", sans-serif;
     font-size: 22px;
     margin: 0px;
+    margin-top: 20px;
 }
 
 .itemTypeRuntime {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.itemBack {
+    background: wheat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    border: transparent;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popContainer  {
+    position: relative;
+    width: 196px;
+}
+
+.popAndRating {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.popcorn {
+    width: 196px;
+    height: auto;
+}
+
+/* .popcornOverlay {
+    width: 100%;
+} */
+
+.rating {
+    font-family: "Acme", sans-serif;
+    font-size: 32px;
+}
+
+.backDescription {
+    font-family: "Lato", sans-serif;
+    font-size: 15px;
+    width: 84%;
+}
+
+.watchButton {
+    height: 42px;
+    width: 83px;
+    background: red;
+    color: white;
+    font-family: "Teko", sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    padding: 5px;
+    margin: 0;
+    border: transparent;
+    border-radius: 8px;
+    text-align: center;
+    margin-right: 23px;
+    margin-top: 15px;
+    align-self: flex-end;
 }

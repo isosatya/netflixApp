@@ -241,15 +241,14 @@ app.post("/new_items", function(req, res) {
                                     //     payload.Country.length
                                     // );
 
-                                    // console.log(
-                                    //     "payload.Poster",
-                                    //     payload.Poster.length
-                                    // );
+                                    console.log(
+                                        "payload.imdbRating",
+                                        payload.imdbRating
+                                    );
 
-                                    // console.log(
-                                    //     "payload.imdbRating",
-                                    //     payload.imdbRating.length
-                                    // );
+                                    if (payload.imdbRating == "N/A") {
+                                        payload.imdbRating = 0;
+                                    }
 
                                     db.addNew(
                                         netflixId,
@@ -285,7 +284,7 @@ app.post("/new_items", function(req, res) {
                                                         console.log(
                                                             `queryCounter = moviesCount`
                                                         );
-                                                        // res.json(moviesPayload);
+                                                        res.json(moviesPayload);
                                                     }
                                                 })
                                                 .catch(err => {
