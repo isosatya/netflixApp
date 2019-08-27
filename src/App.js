@@ -40,15 +40,6 @@ class App extends Component {
             <React.Fragment>
                 <BrowserRouter>
                     <div>
-                        <div className="menu">
-                            <h2
-                                onClick={() =>
-                                    this.setState({ days1: 0, days2: 0 })
-                                }
-                            >
-                                <Link to="/welcome">Home</Link>
-                            </h2>
-                        </div>
                         <div>
                             <Route
                                 path="/welcome"
@@ -61,22 +52,34 @@ class App extends Component {
                                     />
                                 )}
                             />
-                            <Route
-                                path="/new"
-                                render={() => (
-                                    <New
-                                        days1={this.state.days1}
-                                        dataNew={this.state.dataNew}
-                                    />
-                                )}
-                            />
-                            <Route path="/leaving" render={() => <Leaving />} />
-                            <Route
-                                path="/new_seasons"
-                                render={() => (
-                                    <New_seasons days2={this.state.days2} />
-                                )}
-                            />
+                            <div className="menu">
+                                <h2
+                                    onClick={() =>
+                                        this.setState({ days1: 0, days2: 0 })
+                                    }
+                                >
+                                    <Link to="/welcome">Home</Link>
+                                </h2>
+                                <Route
+                                    path="/new"
+                                    render={() => (
+                                        <New
+                                            days1={this.state.days1}
+                                            dataNew={this.state.dataNew}
+                                        />
+                                    )}
+                                />
+                                <Route
+                                    path="/leaving"
+                                    render={() => <Leaving />}
+                                />
+                                <Route
+                                    path="/new_seasons"
+                                    render={() => (
+                                        <New_seasons days2={this.state.days2} />
+                                    )}
+                                />
+                            </div>
                         </div>
                     </div>
                 </BrowserRouter>

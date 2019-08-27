@@ -20,9 +20,26 @@ class New extends Component {
         console.log("this.props at new", this.props);
         // console.log("this.state at new", this.state);
         return (
-            <React.Fragment>
-                <New_item dataNew={this.props.dataNew} />
-            </React.Fragment>
+            <div className="resultsContainer">
+                {!!this.props.dataNew &&
+                    this.props.dataNew.map(newItem => (
+                        <New_item
+                            key={newItem.imbdid}
+                            netflixid={newItem.netflixid}
+                            poster={newItem.poster}
+                            title={newItem.title}
+                            type={newItem.type}
+                            runtime={newItem.runtime}
+                            genre={newItem.genre}
+                            country={newItem.country}
+                            year={newItem.year}
+                            imdb_rating={newItem.imdb_rating}
+                            plot={newItem.plot}
+                            actors={newItem.actors}
+                            language={newItem.language}
+                        />
+                    ))}
+            </div>
         );
     }
 }

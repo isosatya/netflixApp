@@ -9,15 +9,15 @@ class New_item extends Component {
         this.handleChange2 = this.handleChange2.bind(this);
     }
 
-    handleChange(e) {
+    handleChange() {
         // console.log("target name", [e.target]);
-        this.setState({ movie: [e.target.id] });
+        this.setState({ boolean: true });
         // console.log("this.state at handleChange 1", this.state);
     }
 
     handleChange2() {
         // console.log("this.state at handleChange 2a", this.state);
-        this.setState({ movie: null });
+        this.setState({ boolean: false });
         // console.log("this.state at handleChange 2", this.state);
     }
 
@@ -25,109 +25,89 @@ class New_item extends Component {
         // console.log("this.props at new", this.props);
         // console.log("this.state at new", this.state);
         return (
-            <div className="resultsContainer">
-                {!!this.props.dataNew &&
-                    this.props.dataNew.map(newItem => (
-                        <div key={newItem.netflixid} className="itemContainer">
-                            <div
-                                className="itemFront"
-                                id={newItem.netflixid}
-                                onMouseOver={this.handleChange}
-                            >
-                                <img
-                                    className="itemPoster"
-                                    src={
-                                        newItem.poster == `N/A`
-                                            ? "./filmicon.png"
-                                            : newItem.poster
-                                    }
+            <div className="itemContainer">
+                <div className="itemFront" onMouseOver={this.handleChange}>
+                    <img
+                        className="itemPoster"
+                        src={
+                            this.props.poster == `N/A`
+                                ? "./filmicon.png"
+                                : this.props.poster
+                        }
+                    />
+
+                    <div className="itemDescription">
+                        <p className="itemDescription3 itemTitle">
+                            {this.props.title}
+                        </p>
+                        <div className="itemDescription2">
+                            <p className="itemDescription3 itemTypeRuntime">
+                                {this.props.type}
+                            </p>
+                            <p className="itemDescription3">-</p>
+                            <p className="itemDescription3">
+                                {this.props.runtime}
+                            </p>
+                        </div>
+
+                        <p className="itemDescription3">{this.props.genre}</p>
+                        <div className="itemDescription2">
+                            <p className="itemDescription3">
+                                {this.props.country}
+                            </p>
+                            <p className="itemDescription3">
+                                / {this.props.year}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {this.state.boolean && (
+                    <div className="itemBack" onMouseOut={this.handleChange2}>
+                        <div className="popAndRating">
+                            <div className="popAndOverlay">
+                                <img className="popcorn" src="./pop7.jpg" />
+                                <div
+                                    style={{
+                                        width: "127px",
+                                        background: "white",
+                                        height:
+                                            20 * (10 - this.props.imdb_rating) +
+                                            "px",
+                                        position: "absolute",
+                                        top: 0,
+                                        bottom: 0,
+                                        marginLeft: "34px",
+                                        opacity: 0.8,
+                                        border: "transparent",
+                                        borderRadius: "4px",
+                                        zIndex: 100
+                                    }}
                                 />
-
-                                <div className="itemDescription">
-                                    <p className="itemDescription3 itemTitle">
-                                        {newItem.title}
-                                    </p>
-                                    <div className="itemDescription2">
-                                        <p className="itemDescription3 itemTypeRuntime">
-                                            {newItem.type}
-                                        </p>
-                                        <p className="itemDescription3">-</p>
-                                        <p className="itemDescription3">
-                                            {newItem.runtime}
-                                        </p>
-                                    </div>
-
-                                    <p className="itemDescription3">
-                                        {newItem.genre}
-                                    </p>
-                                    <div className="itemDescription2">
-                                        <p className="itemDescription3">
-                                            {newItem.country}
-                                        </p>
-                                        <p className="itemDescription3">
-                                            {newItem.year}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
 
-                            {this.state.movie && (
-                                <div
-                                    className="itemBack"
-                                    id={newItem.netflixid}
-                                    onMouseOut={this.handleChange2}
-                                >
-                                    <div className="popAndRating">
-                                        <div className="popAndOverlay">
-                                            <img
-                                                className="popcorn"
-                                                src="./pop7.jpg"
-                                            />
-                                            <div
-                                                style={{
-                                                    width: "127px",
-                                                    background: "white",
-                                                    height:
-                                                        20 *
-                                                            (10 -
-                                                                newItem.imdb_rating) +
-                                                        "px",
-                                                    position: "absolute",
-                                                    top: 0,
-                                                    bottom: 0,
-                                                    marginLeft: "34px",
-                                                    opacity: 0.8,
-                                                    border: "transparent",
-                                                    borderRadius: "4px",
-                                                    zIndex: 100
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div className="rating">
-                                            <p>Rating</p>
-                                            <p>{newItem.imdb_rating} / 10</p>
-                                        </div>
-                                    </div>
-                                    <div className="backDescription">
-                                        <p>{newItem.plot}</p>
-                                        <p>Actors: {newItem.actors}</p>
-                                        <p>Language: {newItem.language}</p>
-                                    </div>
-                                    <a
-                                        className="watchButton"
-                                        href={`https://www.netflix.com/watch/${
-                                            newItem.netflixid
-                                        }`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Watch
-                                    </a>
-                                </div>
-                            )}
+                            <div className="rating">
+                                <p>Rating</p>
+                                <p>{this.props.imdb_rating} / 10</p>
+                            </div>
                         </div>
-                    ))}
+                        <div className="backDescription">
+                            <p>{this.props.plot}</p>
+                            <p>Actors: {this.props.actors}</p>
+                            <p>Language: {this.props.language}</p>
+                        </div>
+                        <a
+                            className="watchButton"
+                            href={`https://www.netflix.com/watch/${
+                                this.props.netflixid
+                            }`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Watch
+                        </a>
+                    </div>
+                )}
             </div>
         );
     }
