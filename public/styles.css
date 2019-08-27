@@ -29,7 +29,27 @@ a:visited {
 
 .menu {
     width: 100vw;
-    height: 10vh;
+    height: 14vh;
+    position: relative;
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.home {
+    border-radius: 50%;
+    border: transparent;
+    background: #f37979;
+    height: 50px;
+    width: 50px;
+    padding: 9px;
+    margin-right: 15px;
+    right: 0;
+}
+
+.homeButton {
+    height: 100%;
+    width: 100%;
 }
 
 .boxContainer {

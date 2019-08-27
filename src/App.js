@@ -52,14 +52,22 @@ class App extends Component {
                                     />
                                 )}
                             />
-                            <div className="menu">
-                                <h2
-                                    onClick={() =>
-                                        this.setState({ days1: 0, days2: 0 })
-                                    }
-                                >
-                                    <Link to="/welcome">Home</Link>
-                                </h2>
+                            <div>
+                                <Link to="/welcome" className="menu">
+                                    <div className="home">
+                                        <img
+                                            className="homeButton"
+                                            src="/house.png"
+                                            onClick={() =>
+                                                this.setState({
+                                                    days1: 0,
+                                                    days2: 0
+                                                })
+                                            }
+                                        />
+                                    </div>
+                                </Link>
+
                                 <Route
                                     path="/new"
                                     render={() => (
