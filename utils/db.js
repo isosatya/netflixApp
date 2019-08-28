@@ -78,6 +78,79 @@ module.exports.getNewInfo = function getNewInfo(netflixid) {
     );
 };
 
+module.exports.cleanLeavingTable = function cleanLeavingTable() {
+    return db.query(
+        `
+        DELETE FROM leaving;
+        `
+    );
+};
+
+module.exports.addLeaving = function addLeaving(
+    netflixid,
+    imbdid,
+    leaving,
+    type,
+    title,
+    year,
+    runtime,
+    genre,
+    actors,
+    plot,
+    language,
+    country,
+    poster,
+    imdb_rating
+) {
+    return db.query(
+        `
+        INSERT INTO new (netflixid, imbdid, leaving, type, title, year, runtime, genre, actors, plot, language, country, poster, imdb_rating)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        RETURNING id;
+    `,
+        [
+            netflixid,
+            imbdid,
+            leaving,
+            type,
+            title,
+            year,
+            runtime,
+            genre,
+            actors,
+            plot,
+            language,
+            country,
+            poster,
+            imdb_rating
+        ]
+    );
+};
+
+module.exports.getLeavingInfo = function getLeavingInfo(netflixid) {
+    return db.query(
+        `
+        SELECT  netflixid,
+                imbdid,
+                leaving,
+                type,
+                title,
+                year,
+                runtime,
+                genre,
+                actors,
+                plot,
+                language,
+                country,
+                poster,
+                imdb_rating 
+        FROM new 
+        WHERE netflixid = $1;
+        `,
+        [netflixid]
+    );
+};
+
 // module.exports.users = function users(firstName, lastName, email, password) {
 //     return db.query(
 //         `
