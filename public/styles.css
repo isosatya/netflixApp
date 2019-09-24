@@ -152,6 +152,22 @@ a:visited {
     margin-top: 145px;
 }
 
+.noResults {
+    text-align: center;
+    font-family: "Teko", sans-serif;
+    font-weight: bolder;
+    letter-spacing: 2.5px;
+    font-size: 55px;
+    background: white;
+    color: red;
+    height: 70px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 235px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
 .resultsContainer {
     margin: 0;
     background: #6c0107;

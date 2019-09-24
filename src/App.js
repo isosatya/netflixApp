@@ -44,7 +44,7 @@ class App extends Component {
     }
 
     render() {
-        // console.log("this.state at App", this.state.dataNew);
+        console.log("this.state at App", this.state.dataNew);
 
         return (
             <React.Fragment>

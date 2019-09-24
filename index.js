@@ -136,17 +136,13 @@ if (process.env.NODE_ENV != "production") {
 //         });
 // });
 
+let secrets = require("./secrets");
+
 //      Parameters for Netflix API
-let headers = {
-    "x-rapidapi-host": "unogs-unogs-v1.p.rapidapi.com",
-    "x-rapidapi-key": "8016ba11b6msh98e71216d87c4f2p12a5d5jsn9b29742620d3"
-};
+let headers = secrets.headers;
 
 //      Parameters for ImdB API
-let headers2 = {
-    "x-rapidapi-host": "movie-database-imdb-alternative.p.rapidapi.com",
-    "x-rapidapi-key": "8016ba11b6msh98e71216d87c4f2p12a5d5jsn9b29742620d3"
-};
+let headers2 = secrets.headers2;
 
 let days1;
 let param;
@@ -172,7 +168,7 @@ app.post("/new_items", function(req, res) {
     };
 
     db.cleanNewTable()
-        .then(
+        .then(() => {
             request(param, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
@@ -266,16 +262,16 @@ app.post("/new_items", function(req, res) {
                                             );
                                         });
                                 } else {
-                                    console.log("error", error);
+                                    console.log("Error at second api", error);
                                 }
                             });
                         }
                     }
                 } else {
-                    console.log("error", error);
+                    console.log("Error at first api", error);
                 }
-            })
-        )
+            });
+        })
         .catch(err => {
             console.log("Error at deleting table", err);
         });

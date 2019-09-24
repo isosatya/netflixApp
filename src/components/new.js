@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import New_item from "./new_item";
+// import { log } from "util";
 
 class New extends Component {
     constructor(props) {
@@ -7,20 +8,16 @@ class New extends Component {
         this.state = {};
     }
 
-    // componentDidUpdate(prevProps) {
-    //     // Typical usage (don't forget to compare props):
-    //     if (this.props != prevProps) {
-    //         if (!this.props.dataNew.length) {
-    //             return <div className="warning">Warning!</div>;
-    //         }
-    //     }
-    // }
-
     render() {
-        console.log("this.props at new", this.props);
-        // console.log("this.state at new", this.state);
+        // console.log("this.props at new", this.props);
+
         return (
             <div className="resultsContainer">
+                {this.props.dataNew === undefined && (
+                    <h1 className="noResults">
+                        No updates for the selected days...
+                    </h1>
+                )}
                 {!!this.props.dataNew &&
                     this.props.dataNew.map(newItem => (
                         <New_item
