@@ -104,7 +104,7 @@ module.exports.addLeaving = function addLeaving(
 ) {
     return db.query(
         `
-        INSERT INTO new (netflixid, imbdid, leaving, type, title, year, runtime, genre, actors, plot, language, country, poster, imdb_rating)
+        INSERT INTO leaving (netflixid, imbdid, leaving, type, title, year, runtime, genre, actors, plot, language, country, poster, imdb_rating)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING id;
     `,
@@ -144,7 +144,7 @@ module.exports.getLeavingInfo = function getLeavingInfo(netflixid) {
                 country,
                 poster,
                 imdb_rating 
-        FROM new 
+        FROM leaving 
         WHERE netflixid = $1;
         `,
         [netflixid]

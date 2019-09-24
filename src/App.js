@@ -14,6 +14,7 @@ class App extends Component {
         this.state = { days1: 0, days2: 0 };
         this.handleChange = this.handleChange.bind(this);
         this.searchNew = this.searchNew.bind(this);
+        this.searchLeaving = this.searchLeaving.bind(this);
     }
 
     componentDidMount() {
@@ -33,6 +34,15 @@ class App extends Component {
         });
     }
 
+    searchLeaving() {
+        console.log("i clicked on search leaving");
+
+        axios.post("/leaving").then(response => {
+            console.log("response from backend for leaving", response.data);
+            // this.setState({ dataNew: response.data });
+        });
+    }
+
     render() {
         // console.log("this.state at App", this.state.dataNew);
 
@@ -49,6 +59,7 @@ class App extends Component {
                                         days2={this.state.days2}
                                         handleChange={this.handleChange}
                                         searchNew={this.searchNew}
+                                        searchLeaving={this.searchLeaving}
                                     />
                                 )}
                             />

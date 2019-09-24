@@ -59,7 +59,12 @@ class Boxes extends Component {
                         >
                             <h2 className="boxText2">Leaving</h2>
                             <button className="buttonGo buttonGo2">
-                                <Link to="/leaving">Go!</Link>
+                                <Link
+                                    to="/leaving"
+                                    onClick={this.props.searchLeaving}
+                                >
+                                    Go!
+                                </Link>
                             </button>
                         </div>
                     )}
