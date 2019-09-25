@@ -38,8 +38,8 @@ class App extends Component {
         console.log("i clicked on search leaving");
 
         axios.post("/leaving").then(response => {
-            console.log("response from backend for leaving", response.data);
-            // this.setState({ dataNew: response.data });
+            // console.log("response from backend for leaving", response.data);
+            this.setState({ dataNew: response.data });
         });
     }
 
@@ -90,7 +90,9 @@ class App extends Component {
                                 />
                                 <Route
                                     path="/leaving"
-                                    render={() => <Leaving />}
+                                    render={() => (
+                                        <Leaving dataNew={this.state.dataNew} />
+                                    )}
                                 />
                                 <Route
                                     path="/new_seasons"

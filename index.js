@@ -341,10 +341,16 @@ app.post("/leaving", function(req, res) {
                                             payload.imdbRating = 0;
                                         }
 
+                                        let splitLeaving = leaving.split("-");
+                                        let reverseSplitLeaving = splitLeaving.reverse();
+                                        let newLeaving = reverseSplitLeaving.join(
+                                            "-"
+                                        );
+
                                         db.addLeaving(
                                             netflixId,
                                             movieId,
-                                            leaving,
+                                            newLeaving,
                                             payload.Type,
                                             payload.Title,
                                             payload.Year,

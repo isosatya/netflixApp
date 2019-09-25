@@ -92,15 +92,20 @@ class New_item extends Component {
                             </div>
                         </div>
                         <div className="backDescription">
-                            <p>{this.props.plot}</p>
+                            <p
+                                style={{
+                                    fontWeight: "bolder",
+                                    fontStyle: "italic"
+                                }}
+                            >
+                                {this.props.plot}
+                            </p>
                             <p>Actors: {this.props.actors}</p>
                             <p>Language: {this.props.language}</p>
                         </div>
                         <a
                             className="watchButton"
-                            href={`https://www.netflix.com/watch/${
-                                this.props.netflixid
-                            }`}
+                            href={`https://www.netflix.com/watch/${this.props.netflixid}`}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
