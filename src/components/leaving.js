@@ -32,6 +32,7 @@ class Leaving extends Component {
                             plot={newItem.plot}
                             actors={newItem.actors}
                             language={newItem.language}
+                            leaving={newItem.leaving}
                         />
                     ))}
             </div>

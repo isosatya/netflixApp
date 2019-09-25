@@ -168,6 +168,22 @@ a:visited {
     padding-right: 35px;
 }
 
+.leavingDate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: red;
+    text-align: center;
+    font-family: "Teko", sans-serif;
+    font-size: 55px;
+    font-weight: bolder;
+    letter-spacing: 2.5px;
+    background: white;
+    opacity: 0.75;
+    width: 100%;
+    top: 2%;
+}
+
 .resultsContainer {
     margin: 0;
     background: #6c0107;

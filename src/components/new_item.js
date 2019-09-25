@@ -22,7 +22,7 @@ class New_item extends Component {
     }
 
     render() {
-        // console.log("this.props at new", this.props);
+        console.log("this.props at new", this.props);
         // console.log("this.state at new", this.state);
         return (
             <div className="itemContainer">
@@ -61,6 +61,18 @@ class New_item extends Component {
                         </div>
                     </div>
                 </div>
+                {this.props.leaving && (
+                    <div className="leavingDate">
+                        <p
+                            style={{
+                                fontSize: "20px"
+                            }}
+                        >
+                            Leaving on the
+                        </p>
+                        <p>{this.props.leaving}</p>
+                    </div>
+                )}
 
                 {this.state.boolean && (
                     <div className="itemBack" onMouseOut={this.handleChange2}>
