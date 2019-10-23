@@ -5,8 +5,6 @@ import Boxes from "./components/boxes";
 import New from "./components/new";
 import New_seasons from "./components/new_seasons";
 import Leaving from "./components/leaving";
-import { log } from "util";
-import { type } from "os";
 
 class App extends Component {
     constructor(props) {
@@ -15,6 +13,7 @@ class App extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.searchNew = this.searchNew.bind(this);
         this.searchLeaving = this.searchLeaving.bind(this);
+        this.searchNewSeasons = this.searchNewSeasons.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +27,8 @@ class App extends Component {
     }
 
     searchNew() {
+        console.log("this.state.days1", this.state.days1);
+
         axios.post("/new_items", { days1: this.state.days1 }).then(response => {
             // console.log("response from backend", response.data.length);
             this.setState({ dataNew: response.data });
@@ -35,16 +36,25 @@ class App extends Component {
     }
 
     searchLeaving() {
-        console.log("i clicked on search leaving");
-
-        axios.post("/leaving").then(response => {
+        axios.post("/leaving_items").then(response => {
             // console.log("response from backend for leaving", response.data);
             this.setState({ dataNew: response.data });
         });
     }
 
+    searchNewSeasons() {
+        console.log("this.state.days2", this.state.days2);
+
+        axios
+            .post("/new_seasons_items", { days2: this.state.days2 })
+            .then(response => {
+                console.log("response from backend", response.data.length);
+                // this.setState({ dataNew: response.data });
+            });
+    }
+
     render() {
-        console.log("this.state at App", this.state.dataNew);
+        console.log("this.state at App", this.state);
 
         return (
             <React.Fragment>
@@ -60,6 +70,7 @@ class App extends Component {
                                         handleChange={this.handleChange}
                                         searchNew={this.searchNew}
                                         searchLeaving={this.searchLeaving}
+                                        searchNewSeasons={this.searchNewSeasons}
                                     />
                                 )}
                             />

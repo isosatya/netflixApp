@@ -67,10 +67,11 @@ class New_item extends Component {
                             style={{
                                 fontSize: "20px"
                             }}
+                            className="leavingDate1 leavingDate2"
                         >
                             Leaving on the
                         </p>
-                        <p>{this.props.leaving}</p>
+                        <p className="leavingDate1">{this.props.leaving}</p>
                     </div>
                 )}
 

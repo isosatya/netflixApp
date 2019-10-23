@@ -145,24 +145,55 @@ let headers = secrets.headers;
 let headers2 = secrets.headers2;
 
 let days1;
+let days2;
 let param;
 let param2;
 let country;
 // var netflixId;
-let movieId;
 let moviesCount;
 let queryCounter;
 let payload;
 let moviesPayload;
 let leaving;
 
-app.post("/new_items", function(req, res) {
-    days1 = req.body.days1;
+app.post("/new_seasons_items", function(req, res) {
+    days2 = req.body.days2;
+    console.log("req.body.days2", days2);
+
     country = "DE";
 
     //      Parameters for Netflix API
     param = {
-        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get%3Anew${days1}%3A${country}&p=1&t=ns&st=adv`,
+        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get:seasons${days2}:${country}&t=ns&st=adv&p=1`,
+        method: "GET",
+        headers: headers
+    };
+
+    db.cleanNewSeasonsTable()
+        .then(() => {
+            request(param, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // console.log("!error NETFLIX && response.statusCode == 200");
+                    payload = JSON.parse(body);
+                    console.log("payload from first request", payload);
+                } else {
+                    console.log("Error at second api", error);
+                }
+            });
+        })
+        .catch(err => {
+            console.log("Error at deleting new_seasons table", err);
+        });
+});
+
+app.post("/new_items", function(req, res) {
+    days1 = req.body.days1;
+    // console.log("req.body.days1", days1);
+    country = "DE";
+
+    //      Parameters for Netflix API
+    param = {
+        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get:new${days1}:${country}&p=1&t=ns&st=adv`,
         method: "GET",
         headers: headers
     };
@@ -180,6 +211,10 @@ app.post("/new_items", function(req, res) {
                     moviesPayload = [];
 
                     for (var i = 0; i < payload.ITEMS.length; i++) {
+                        if (payload.ITEMS[i].imdbid === "notfound") {
+                            payload.ITEMS[i].imdbid = 0;
+                        }
+
                         if (payload.ITEMS[i].imdbid) {
                             moviesCount++;
                         }
@@ -187,10 +222,15 @@ app.post("/new_items", function(req, res) {
 
                     for (i = 0; i < payload.ITEMS.length; i++) {
                         if (payload.ITEMS[i].imdbid) {
+                            // console.log(
+                            //     "payload.ITEMS[i].imdbid LINE 229--->",
+                            //     payload.ITEMS[i].imdbid
+                            // );
+
                             /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
                             let netflixId = payload.ITEMS[i].netflixid;
 
-                            movieId = payload.ITEMS[i].imdbid;
+                            let movieId = payload.ITEMS[i].imdbid;
                             //      Parameters for ImdB API
                             param2 = {
                                 url: `https://movie-database-imdb-alternative.p.rapidapi.com/?i=${movieId}&f=json`,
@@ -207,13 +247,10 @@ app.post("/new_items", function(req, res) {
                                     if (payload.imdbRating == "N/A") {
                                         payload.imdbRating = 0;
                                     }
-                                    console.log(
-                                        `I am about to add netflixId ${netflixId}`
-                                    );
 
                                     db.addNew(
                                         netflixId,
-                                        payload.imdbID,
+                                        movieId,
                                         payload.Type,
                                         payload.Title,
                                         payload.Year,
@@ -273,11 +310,11 @@ app.post("/new_items", function(req, res) {
             });
         })
         .catch(err => {
-            console.log("Error at deleting table", err);
+            console.log("Error at deleting new_item related table", err);
         });
 });
 
-app.post("/leaving", function(req, res) {
+app.post("/leaving_items", function(req, res) {
     country = "DE";
 
     console.log("testing the leaving address");
@@ -313,96 +350,88 @@ app.post("/leaving", function(req, res) {
                     }
 
                     for (i = 0; i < payload.ITEMS.length; i++) {
-                        for (i = 0; i < payload.ITEMS.length; i++) {
-                            if (payload.ITEMS[i].imdbid) {
-                                /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
-                                let netflixId = payload.ITEMS[i].netflixid;
-                                leaving = payload.ITEMS[i].unogsdate;
-                                /////////////////////// IF I DECLARE movieId OUTSIDE IT DOESN WORK WHY???
-                                let movieId = payload.ITEMS[i].imdbid;
-                                //      Parameters for ImdB API
-                                param2 = {
-                                    url: `https://movie-database-imdb-alternative.p.rapidapi.com/?i=${movieId}&f=json`,
-                                    method: "GET",
-                                    headers: headers2
-                                };
+                        if (payload.ITEMS[i].imdbid) {
+                            /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
+                            let netflixId = payload.ITEMS[i].netflixid;
+                            leaving = payload.ITEMS[i].unogsdate;
+                            /////////////////////// IF I DECLARE movieId OUTSIDE IT DOESN WORK WHY???
+                            let movieId = payload.ITEMS[i].imdbid;
+                            //      Parameters for ImdB API
+                            param2 = {
+                                url: `https://movie-database-imdb-alternative.p.rapidapi.com/?i=${movieId}&f=json`,
+                                method: "GET",
+                                headers: headers2
+                            };
 
-                                request(param2, function(
-                                    error,
-                                    response,
-                                    body
-                                ) {
-                                    if (!error && response.statusCode == 200) {
-                                        // console.log("!error IMDB && response.statusCode == 200");
+                            request(param2, function(error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    // console.log("!error IMDB && response.statusCode == 200");
 
-                                        let payload = JSON.parse(body);
+                                    let payload = JSON.parse(body);
 
-                                        if (payload.imdbRating == "N/A") {
-                                            payload.imdbRating = 0;
-                                        }
-
-                                        let splitLeaving = leaving.split("-");
-                                        let reverseSplitLeaving = splitLeaving.reverse();
-                                        let newLeaving = reverseSplitLeaving.join(
-                                            "-"
-                                        );
-
-                                        db.addLeaving(
-                                            netflixId,
-                                            movieId,
-                                            newLeaving,
-                                            payload.Type,
-                                            payload.Title,
-                                            payload.Year,
-                                            payload.Runtime,
-                                            payload.Genre,
-                                            payload.Actors,
-                                            payload.Plot,
-                                            payload.Language,
-                                            payload.Country,
-                                            payload.Poster,
-                                            payload.imdbRating
-                                        )
-                                            .then(() => {
-                                                db.getLeavingInfo(netflixId)
-                                                    .then(results => {
-                                                        queryCounter++;
-
-                                                        moviesPayload.push(
-                                                            results.rows[0]
-                                                        );
-
-                                                        if (
-                                                            queryCounter ==
-                                                            moviesCount
-                                                        ) {
-                                                            console.log(
-                                                                `queryCounter = moviesCount`
-                                                            );
-
-                                                            res.json(
-                                                                moviesPayload
-                                                            );
-                                                        }
-                                                    })
-                                                    .catch(err => {
-                                                        console.log(
-                                                            "Error at the getNewInfo Query",
-                                                            err
-                                                        );
-                                                    });
-                                            })
-                                            .catch(err => {
-                                                console.log(
-                                                    "Error at creating entry at table",
-                                                    err
-                                                );
-                                            });
-                                    } else {
-                                        console.log("error", error);
+                                    if (payload.imdbRating == "N/A") {
+                                        payload.imdbRating = 0;
                                     }
-                                });
-                            }
+
+                                    let splitLeaving = leaving.split("-");
+                                    let reverseSplitLeaving = splitLeaving.reverse();
+                                    let newLeaving = reverseSplitLeaving.join(
+                                        "-"
+                                    );
+
+                                    db.addLeaving(
+                                        netflixId,
+                                        movieId,
+                                        newLeaving,
+                                        payload.Type,
+                                        payload.Title,
+                                        payload.Year,
+                                        payload.Runtime,
+                                        payload.Genre,
+                                        payload.Actors,
+                                        payload.Plot,
+                                        payload.Language,
+                                        payload.Country,
+                                        payload.Poster,
+                                        payload.imdbRating
+                                    )
+                                        .then(() => {
+                                            db.getLeavingInfo(netflixId)
+                                                .then(results => {
+                                                    queryCounter++;
+
+                                                    moviesPayload.push(
+                                                        results.rows[0]
+                                                    );
+
+                                                    if (
+                                                        queryCounter ==
+                                                        moviesCount
+                                                    ) {
+                                                        console.log(
+                                                            `queryCounter = moviesCount`
+                                                        );
+
+                                                        res.json(moviesPayload);
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.log(
+                                                        "Error at the getNewInfo Query",
+                                                        err
+                                                    );
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(
+                                                "Error at creating entry at table",
+                                                err
+                                            );
+                                        });
+                                } else {
+                                    console.log("error", error);
+                                }
+                            });
                         }
                     }
                 } else {
@@ -411,7 +440,7 @@ app.post("/leaving", function(req, res) {
             });
         })
         .catch(err => {
-            console.log("Error at deleting table", err);
+            console.log("Error at deleting leaving_items related table", err);
         });
 });
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { HashRouter, BrowserRouter, Route, Link } from "react-router-dom";
 import axios from "axios";
+import { log } from "util";
 
 class Boxes extends Component {
     constructor(props) {
@@ -10,6 +11,8 @@ class Boxes extends Component {
     }
 
     render() {
+        // console.log("this.props at Boxes", this.props);
+
         return (
             <div className="boxContainer">
                 <div
@@ -95,7 +98,12 @@ class Boxes extends Component {
                                 days
                             </h2>
                             <button className="buttonGo">
-                                <Link to="/new_seasons">Go!</Link>
+                                <Link
+                                    to="/new_seasons"
+                                    onClick={this.props.searchNewSeasons}
+                                >
+                                    Go!
+                                </Link>
                             </button>
                         </div>
                     )}

@@ -151,6 +151,14 @@ module.exports.getLeavingInfo = function getLeavingInfo(netflixid) {
     );
 };
 
+module.exports.cleanNewSeasonsTable = function cleanNewSeasonsTable() {
+    return db.query(
+        `
+        DELETE FROM new_seasons;
+        `
+    );
+};
+
 // module.exports.users = function users(firstName, lastName, email, password) {
 //     return db.query(
 //         `

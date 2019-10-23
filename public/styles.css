@@ -177,11 +177,22 @@ a:visited {
     font-family: "Teko", sans-serif;
     font-size: 55px;
     font-weight: bolder;
-    letter-spacing: 2.5px;
-    background: white;
+    background: #ffef11;
     opacity: 0.75;
     width: 100%;
-    top: 2%;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.leavingDate1 {
+    margin: 0;
+}
+
+.leavingDate2 {
+    margin-top: 15px;
 }
 
 .resultsContainer {
