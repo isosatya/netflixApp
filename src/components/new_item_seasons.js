@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { log } from "util";
 
-class New_item extends Component {
+class New_item_seasons extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -22,7 +22,7 @@ class New_item extends Component {
     }
 
     render() {
-        console.log("this.props at new", this.props);
+        console.log("this.props at new seasons", this.props);
         // console.log("this.state at new", this.state);
         return (
             <div className="itemContainer">
@@ -42,11 +42,11 @@ class New_item extends Component {
                         </p>
                         <div className="itemDescription2">
                             <p className="itemDescription3 itemTypeRuntime">
-                                {this.props.type}
+                                Seasons: {this.props.total_seasons}
                             </p>
                             <p className="itemDescription3">-</p>
                             <p className="itemDescription3">
-                                {this.props.runtime}
+                                Duration: {this.props.runtime}
                             </p>
                         </div>
 
@@ -131,4 +131,4 @@ class New_item extends Component {
     }
 }
 
-export default New_item;
+export default New_item_seasons;

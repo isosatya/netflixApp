@@ -39,8 +39,8 @@ a:visited {
 
 .home {
     border-radius: 50%;
-    border: red solid 5px;
-    background: white;
+    border: #ff0000b3 solid 5px;
+    background: #f5f0f0e6;
     height: 50px;
     width: 50px;
     padding: 9px;

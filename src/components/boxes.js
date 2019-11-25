@@ -31,7 +31,7 @@ class Boxes extends Component {
                                 <input
                                     name="days1"
                                     type="number"
-                                    min={0}
+                                    min={1}
                                     max={60}
                                     className="numberDays"
                                     value={this.props.days1}
@@ -61,13 +61,11 @@ class Boxes extends Component {
                             onMouseOut={() => this.setState({ bool2: false })}
                         >
                             <h2 className="boxText2">Leaving</h2>
-                            <button className="buttonGo buttonGo2">
-                                <Link
-                                    to="/leaving"
-                                    onClick={this.props.searchLeaving}
-                                >
-                                    Go!
-                                </Link>
+                            <button
+                                className="buttonGo buttonGo2"
+                                onClick={this.props.searchLeaving}
+                            >
+                                <Link to="/leaving">Go!</Link>
                             </button>
                         </div>
                     )}
@@ -89,7 +87,7 @@ class Boxes extends Component {
                                 <input
                                     name="days2"
                                     type="number"
-                                    min={0}
+                                    min={1}
                                     max={60}
                                     value={this.props.days2}
                                     className="numberDays"
@@ -97,13 +95,11 @@ class Boxes extends Component {
                                 />{" "}
                                 days
                             </h2>
-                            <button className="buttonGo">
-                                <Link
-                                    to="/new_seasons"
-                                    onClick={this.props.searchNewSeasons}
-                                >
-                                    Go!
-                                </Link>
+                            <button
+                                className="buttonGo"
+                                onClick={this.props.searchNewSeasons}
+                            >
+                                <Link to="/new_seasons">Go!</Link>
                             </button>
                         </div>
                     )}

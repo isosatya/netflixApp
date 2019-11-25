@@ -11,10 +11,8 @@ class Leaving extends Component {
         console.log("this.props at leaving", this.props);
         return (
             <div className="resultsContainer">
-                {this.props.dataNew === undefined && (
-                    <h1 className="noResults">
-                        No updates for the selected days...
-                    </h1>
+                {this.props.dataNew == 0 && (
+                    <h1 className="noResults">Loading results...</h1>
                 )}
                 {!!this.props.dataNew &&
                     this.props.dataNew.map(newItem => (

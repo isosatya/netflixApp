@@ -159,6 +159,68 @@ module.exports.cleanNewSeasonsTable = function cleanNewSeasonsTable() {
     );
 };
 
+module.exports.addNewSeasons = function addNewSeasons(
+    netflixid,
+    imbdid,
+    title,
+    year,
+    runtime,
+    genre,
+    actors,
+    plot,
+    language,
+    country,
+    poster,
+    imdb_rating,
+    total_seasons
+) {
+    return db.query(
+        `
+        INSERT INTO new_seasons (netflixid, imbdid, title, year, runtime, genre, actors, plot, language, country, poster, imdb_rating, total_seasons)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+        RETURNING id;
+    `,
+        [
+            netflixid,
+            imbdid,
+            title,
+            year,
+            runtime,
+            genre,
+            actors,
+            plot,
+            language,
+            country,
+            poster,
+            imdb_rating,
+            total_seasons
+        ]
+    );
+};
+
+module.exports.getNewSeasonsInfo = function getNewSeasonsInfo(netflixid) {
+    return db.query(
+        `
+        SELECT  netflixid,
+                imbdid,
+                title,
+                year,
+                runtime,
+                genre,
+                actors,
+                plot,
+                language,
+                country,
+                poster,
+                imdb_rating,
+                total_seasons 
+        FROM new_seasons 
+        WHERE netflixid = $1;
+        `,
+        [netflixid]
+    );
+};
+
 // module.exports.users = function users(firstName, lastName, email, password) {
 //     return db.query(
 //         `

@@ -175,36 +175,15 @@ app.post("/new_seasons_items", function(req, res) {
                 if (!error && response.statusCode == 200) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
                     payload = JSON.parse(body);
-                    console.log("payload from first request", payload);
-                } else {
-                    console.log("Error at second api", error);
-                }
-            });
-        })
-        .catch(err => {
-            console.log("Error at deleting new_seasons table", err);
-        });
-});
 
-app.post("/new_items", function(req, res) {
-    days1 = req.body.days1;
-    // console.log("req.body.days1", days1);
-    country = "DE";
+                    // console.log(
+                    //     "payload from first request new seasons",
+                    //     payload.ITEMS
+                    // );
 
-    //      Parameters for Netflix API
-    param = {
-        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get:new${days1}:${country}&p=1&t=ns&st=adv`,
-        method: "GET",
-        headers: headers
-    };
-
-    db.cleanNewTable()
-        .then(() => {
-            request(param, function(error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    // console.log("!error NETFLIX && response.statusCode == 200");
-                    payload = JSON.parse(body);
-                    // console.log("payload from first request", payload);
+                    if (payload.ITEMS.length == 0) {
+                        res.json("No results for the selected days");
+                    }
 
                     moviesCount = 0;
                     queryCounter = 0;
@@ -248,10 +227,153 @@ app.post("/new_items", function(req, res) {
                                         payload.imdbRating = 0;
                                     }
 
+                                    console.log(
+                                        "payload for second api",
+                                        payload
+                                    );
+
+                                    db.addNewSeasons(
+                                        netflixId,
+                                        movieId,
+                                        payload.Title,
+                                        payload.Year,
+                                        payload.Runtime,
+                                        payload.Genre,
+                                        payload.Actors,
+                                        payload.Plot,
+                                        payload.Language,
+                                        payload.Country,
+                                        payload.Poster,
+                                        payload.imdbRating,
+                                        payload.totalSeasons
+                                    )
+                                        .then(() => {
+                                            db.getNewSeasonsInfo(netflixId)
+                                                .then(results => {
+                                                    queryCounter++;
+                                                    console.log(
+                                                        "number of movies",
+                                                        moviesCount
+                                                    );
+                                                    moviesPayload.push(
+                                                        results.rows[0]
+                                                    );
+
+                                                    if (
+                                                        queryCounter ==
+                                                        moviesCount
+                                                    ) {
+                                                        console.log(
+                                                            `queryCounter = moviesCount`
+                                                        );
+                                                        res.json(moviesPayload);
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.log(
+                                                        "Error at the getNewInfo Query",
+                                                        err
+                                                    );
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(
+                                                "Error at creating entry at table",
+                                                err
+                                            );
+                                        });
+                                } else {
+                                    console.log("Error at second api", error);
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    console.log("Error at second api", error);
+                }
+            });
+        })
+        .catch(err => {
+            console.log("Error at deleting new_seasons table", err);
+        });
+});
+
+app.post("/new_items", function(req, res) {
+    days1 = req.body.days1;
+    // console.log("req.body.days1", days1);
+    country = "DE";
+
+    //      Parameters for Netflix API
+    param = {
+        url: `https://unogs-unogs-v1.p.rapidapi.com/aaapi.cgi?q=get:new${days1}:${country}&p=1&t=ns&st=adv`,
+        method: "GET",
+        headers: headers
+    };
+
+    db.cleanNewTable()
+        .then(() => {
+            request(param, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // console.log("!error NETFLIX && response.statusCode == 200");
+                    payload = JSON.parse(body);
+                    // console.log("payload from new items", payload);
+
+                    moviesCount = 0;
+                    queryCounter = 0;
+                    moviesPayload = [];
+
+                    for (var i = 0; i < payload.ITEMS.length; i++) {
+                        if (payload.ITEMS[i].imdbid === "notfound") {
+                            payload.ITEMS[i].imdbid = 0;
+                        }
+
+                        if (payload.ITEMS[i].imdbid) {
+                            moviesCount++;
+                        }
+                    }
+
+                    for (i = 0; i < payload.ITEMS.length; i++) {
+                        if (payload.ITEMS[i].imdbid) {
+                            // console.log(
+                            //     "payload.ITEMS[i].imdbid LINE 229--->",
+                            //     payload.ITEMS[i].imdbid
+                            // );
+
+                            /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
+                            let netflixId = payload.ITEMS[i].netflixid;
+
+                            let movieId = payload.ITEMS[i].imdbid;
+                            //      Parameters for ImdB API
+                            param2 = {
+                                url: `https://movie-database-imdb-alternative.p.rapidapi.com/?i=${movieId}&f=json`,
+                                method: "GET",
+                                headers: headers2
+                            };
+
+                            request(param2, function(error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    // console.log("!error IMDB && response.statusCode == 200");
+
+                                    let payload = JSON.parse(body);
+
+                                    if (payload.imdbRating == "N/A") {
+                                        payload.imdbRating = 0;
+                                    }
+
+                                    console.log(
+                                        "payload for sencon api new",
+                                        payload
+                                    );
+
+                                    const type_payload = payload.Type;
+                                    const type =
+                                        type_payload.charAt(0).toUpperCase() +
+                                        type_payload.substring(1);
+
                                     db.addNew(
                                         netflixId,
                                         movieId,
-                                        payload.Type,
+                                        type,
                                         payload.Title,
                                         payload.Year,
                                         payload.Runtime,
@@ -333,7 +455,7 @@ app.post("/leaving_items", function(req, res) {
                 if (!error && response.statusCode == 200) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
                     payload = JSON.parse(body);
-                    // console.log("payload from leaving request", payload);
+                    console.log("payload from leaving request", payload);
 
                     moviesCount = 0;
                     queryCounter = 0;
@@ -379,11 +501,16 @@ app.post("/leaving_items", function(req, res) {
                                         "-"
                                     );
 
+                                    const type_payload = payload.Type;
+                                    const type =
+                                        type_payload.charAt(0).toUpperCase() +
+                                        type_payload.substring(1);
+
                                     db.addLeaving(
                                         netflixId,
                                         movieId,
                                         newLeaving,
-                                        payload.Type,
+                                        type,
                                         payload.Title,
                                         payload.Year,
                                         payload.Runtime,

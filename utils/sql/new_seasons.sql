@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS new_seasons;
 CREATE TABLE new_seasons
 (
     id SERIAL PRIMARY KEY,
+    netflixid VARCHAR(600) NOT NULL UNIQUE,
     imbdid VARCHAR(600) NOT NULL UNIQUE,
     title VARCHAR(600),
     year VARCHAR(600),
@@ -14,6 +15,6 @@ CREATE TABLE new_seasons
     country VARCHAR(600),
     poster VARCHAR(600),
     imdb_rating VARCHAR(600),
-    type VARCHAR(600),
+    total_seasons varchar(600),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -9,7 +9,7 @@ import Leaving from "./components/leaving";
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { days1: 0, days2: 0 };
+        this.state = { days1: 1, days2: 1 };
         this.handleChange = this.handleChange.bind(this);
         this.searchNew = this.searchNew.bind(this);
         this.searchLeaving = this.searchLeaving.bind(this);
@@ -28,14 +28,15 @@ class App extends Component {
 
     searchNew() {
         console.log("this.state.days1", this.state.days1);
-
+        this.setState({ dataNew: [] });
         axios.post("/new_items", { days1: this.state.days1 }).then(response => {
-            // console.log("response from backend", response.data.length);
+            console.log("response from backend", response.data.length);
             this.setState({ dataNew: response.data });
         });
     }
 
     searchLeaving() {
+        this.setState({ dataNew: [] });
         axios.post("/leaving_items").then(response => {
             // console.log("response from backend for leaving", response.data);
             this.setState({ dataNew: response.data });
@@ -44,12 +45,12 @@ class App extends Component {
 
     searchNewSeasons() {
         console.log("this.state.days2", this.state.days2);
-
+        this.setState({ dataNew: [] });
         axios
             .post("/new_seasons_items", { days2: this.state.days2 })
             .then(response => {
-                console.log("response from backend", response.data.length);
-                // this.setState({ dataNew: response.data });
+                console.log("response from backend", response.data);
+                this.setState({ dataNew: response.data });
             });
     }
 
@@ -82,8 +83,8 @@ class App extends Component {
                                             src="/house.png"
                                             onClick={() =>
                                                 this.setState({
-                                                    days1: 0,
-                                                    days2: 0
+                                                    days1: 1,
+                                                    days2: 1
                                                 })
                                             }
                                         />
@@ -108,7 +109,10 @@ class App extends Component {
                                 <Route
                                     path="/new_seasons"
                                     render={() => (
-                                        <New_seasons days2={this.state.days2} />
+                                        <New_seasons
+                                            days2={this.state.days2}
+                                            dataNew={this.state.dataNew}
+                                        />
                                     )}
                                 />
                             </div>
