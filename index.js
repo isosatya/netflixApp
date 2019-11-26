@@ -158,7 +158,7 @@ let leaving;
 
 app.post("/new_seasons_items", function(req, res) {
     days2 = req.body.days2;
-    console.log("req.body.days2", days2);
+    // console.log("req.body.days2", days2);
 
     country = "DE";
 
@@ -182,7 +182,9 @@ app.post("/new_seasons_items", function(req, res) {
                     // );
 
                     if (payload.ITEMS.length == 0) {
-                        res.json("No results for the selected days");
+                        // console.log("response from payload is empty");
+
+                        res.json(payload.ITEMS);
                     }
 
                     moviesCount = 0;
@@ -227,10 +229,10 @@ app.post("/new_seasons_items", function(req, res) {
                                         payload.imdbRating = 0;
                                     }
 
-                                    console.log(
-                                        "payload for second api",
-                                        payload
-                                    );
+                                    // console.log(
+                                    //     "payload for second api",
+                                    //     payload
+                                    // );
 
                                     db.addNewSeasons(
                                         netflixId,
@@ -318,6 +320,12 @@ app.post("/new_items", function(req, res) {
                     payload = JSON.parse(body);
                     // console.log("payload from new items", payload);
 
+                    if (payload.ITEMS.length == 0) {
+                        // console.log("response from payload is empty");
+
+                        res.json(payload.ITEMS);
+                    }
+
                     moviesCount = 0;
                     queryCounter = 0;
                     moviesPayload = [];
@@ -360,10 +368,10 @@ app.post("/new_items", function(req, res) {
                                         payload.imdbRating = 0;
                                     }
 
-                                    console.log(
-                                        "payload for sencon api new",
-                                        payload
-                                    );
+                                    // console.log(
+                                    //     "payload for sencon api new",
+                                    //     payload
+                                    // );
 
                                     const type_payload = payload.Type;
                                     const type =
@@ -389,10 +397,10 @@ app.post("/new_items", function(req, res) {
                                             db.getNewInfo(netflixId)
                                                 .then(results => {
                                                     queryCounter++;
-                                                    console.log(
-                                                        "number of movies",
-                                                        moviesCount
-                                                    );
+                                                    // console.log(
+                                                    //     "number of movies",
+                                                    //     moviesCount
+                                                    // );
                                                     moviesPayload.push(
                                                         results.rows[0]
                                                     );
@@ -401,9 +409,9 @@ app.post("/new_items", function(req, res) {
                                                         queryCounter ==
                                                         moviesCount
                                                     ) {
-                                                        console.log(
-                                                            `queryCounter = moviesCount`
-                                                        );
+                                                        // console.log(
+                                                        //     `queryCounter = moviesCount`
+                                                        // );
                                                         res.json(moviesPayload);
                                                     }
                                                 })
@@ -439,7 +447,7 @@ app.post("/new_items", function(req, res) {
 app.post("/leaving_items", function(req, res) {
     country = "DE";
 
-    console.log("testing the leaving address");
+    // console.log("testing the leaving address");
 
     //      Parameters for Netflix API
     param = {
@@ -450,12 +458,12 @@ app.post("/leaving_items", function(req, res) {
 
     db.cleanLeavingTable()
         .then(() => {
-            console.log("just cleaned the leaving table");
+            // console.log("just cleaned the leaving table");
             request(param, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
                     payload = JSON.parse(body);
-                    console.log("payload from leaving request", payload);
+                    // console.log("payload from leaving request", payload);
 
                     moviesCount = 0;
                     queryCounter = 0;
@@ -535,9 +543,9 @@ app.post("/leaving_items", function(req, res) {
                                                         queryCounter ==
                                                         moviesCount
                                                     ) {
-                                                        console.log(
-                                                            `queryCounter = moviesCount`
-                                                        );
+                                                        // console.log(
+                                                        //     `queryCounter = moviesCount`
+                                                        // );
 
                                                         res.json(moviesPayload);
                                                     }

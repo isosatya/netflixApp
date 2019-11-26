@@ -8,10 +8,10 @@ class Leaving extends Component {
     }
 
     render() {
-        console.log("this.props at leaving", this.props);
+        // console.log("this.props at leaving", this.props);
         return (
             <div className="resultsContainer">
-                {this.props.dataNew == 0 && (
+                {this.props.loading && (
                     <h1 className="noResults">Loading results...</h1>
                 )}
                 {!!this.props.dataNew &&

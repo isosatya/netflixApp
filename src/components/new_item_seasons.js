@@ -22,7 +22,7 @@ class New_item_seasons extends Component {
     }
 
     render() {
-        console.log("this.props at new seasons", this.props);
+        // console.log("this.props at new seasons", this.props);
         // console.log("this.state at new", this.state);
         return (
             <div className="itemContainer">

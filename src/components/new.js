@@ -13,9 +13,16 @@ class New extends Component {
 
         return (
             <div className="resultsContainer">
-                {this.props.dataNew.length == 0 && (
+                {this.props.loading && (
                     <h1 className="noResults">Loading results...</h1>
                 )}
+
+                {this.props.noResults && (
+                    <h1 className="noResults">
+                        No results for the selected dates!
+                    </h1>
+                )}
+
                 {!!this.props.dataNew &&
                     this.props.dataNew.map(newItem => (
                         <New_item
