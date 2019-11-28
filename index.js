@@ -83,59 +83,6 @@ if (process.env.NODE_ENV != "production") {
 
 //////////////////////////////////////////////   Routes
 
-// app.post("/register", function(req, res) {
-//     var first = req.body.first;
-//     var last = req.body.last;
-//     var email = req.body.email;
-//     var password = req.body.password;
-//     bc.hashPassword(password)
-//         .then(hash => {
-//             db.addUsers(first, last, email, hash)
-//                 .then(results => {
-//                     req.session.usersId = results.rows[0].id;
-//                     res.json({ userId: results.rows[0].id });
-//                 })
-//                 .catch(err => {
-//                     if (err.code == 23505) {
-//                         res.json({ error: 23505 });
-//                     } else {
-//                         res.json({ error: true });
-//                     }
-//                     console.log("Error at addUsers query -->", err);
-//                 });
-//         })
-//         .catch(err => {
-//             res.json({ error: true });
-//             console.log("Error at hashPassword function", err);
-//         });
-// });
-
-// app.post("/login", (req, res) => {
-//     // console.log("req. body for login", req.body);
-
-//     var email = req.body.email;
-//     var password = req.body.password;
-//     db.login(email)
-//         .then(match => {
-//             bc.checkPassword(password, match.rows[0].password)
-//                 .then(doesMatch => {
-//                     if (doesMatch) {
-//                         req.session.usersId = match.rows[0].id;
-//                         res.json({ userId: match.rows[0].id });
-//                     } else {
-//                         res.json({ error: "Password incorrect!" });
-//                     }
-//                 })
-//                 .catch(err => {
-//                     console.log("Error at checkPassword query ->", err);
-//                 });
-//         })
-//         .catch(err => {
-//             res.json({ error: "e-Mail not found!" });
-//             console.log("Error at login query ->", err);
-//         });
-// });
-
 let secrets = require("./secrets");
 
 //      Parameters for Netflix API
@@ -158,8 +105,6 @@ let leaving;
 
 app.post("/new_seasons_items", function(req, res) {
     days2 = req.body.days2;
-    // console.log("req.body.days2", days2);
-
     country = "DE";
 
     //      Parameters for Netflix API
@@ -176,14 +121,7 @@ app.post("/new_seasons_items", function(req, res) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
                     payload = JSON.parse(body);
 
-                    // console.log(
-                    //     "payload from first request new seasons",
-                    //     payload.ITEMS
-                    // );
-
                     if (payload.ITEMS.length == 0) {
-                        // console.log("response from payload is empty");
-
                         res.json(payload.ITEMS);
                     }
 
@@ -203,12 +141,7 @@ app.post("/new_seasons_items", function(req, res) {
 
                     for (i = 0; i < payload.ITEMS.length; i++) {
                         if (payload.ITEMS[i].imdbid) {
-                            // console.log(
-                            //     "payload.ITEMS[i].imdbid LINE 229--->",
-                            //     payload.ITEMS[i].imdbid
-                            // );
-
-                            /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
+                            ///////////////////////
                             let netflixId = payload.ITEMS[i].netflixid;
 
                             let movieId = payload.ITEMS[i].imdbid;
@@ -229,11 +162,6 @@ app.post("/new_seasons_items", function(req, res) {
                                         payload.imdbRating = 0;
                                     }
 
-                                    // console.log(
-                                    //     "payload for second api",
-                                    //     payload
-                                    // );
-
                                     db.addNewSeasons(
                                         netflixId,
                                         movieId,
@@ -253,10 +181,6 @@ app.post("/new_seasons_items", function(req, res) {
                                             db.getNewSeasonsInfo(netflixId)
                                                 .then(results => {
                                                     queryCounter++;
-                                                    console.log(
-                                                        "number of movies",
-                                                        moviesCount
-                                                    );
                                                     moviesPayload.push(
                                                         results.rows[0]
                                                     );
@@ -265,9 +189,6 @@ app.post("/new_seasons_items", function(req, res) {
                                                         queryCounter ==
                                                         moviesCount
                                                     ) {
-                                                        console.log(
-                                                            `queryCounter = moviesCount`
-                                                        );
                                                         res.json(moviesPayload);
                                                     }
                                                 })
@@ -302,7 +223,6 @@ app.post("/new_seasons_items", function(req, res) {
 
 app.post("/new_items", function(req, res) {
     days1 = req.body.days1;
-    // console.log("req.body.days1", days1);
     country = "DE";
 
     //      Parameters for Netflix API
@@ -318,11 +238,8 @@ app.post("/new_items", function(req, res) {
                 if (!error && response.statusCode == 200) {
                     // console.log("!error NETFLIX && response.statusCode == 200");
                     payload = JSON.parse(body);
-                    // console.log("payload from new items", payload);
 
                     if (payload.ITEMS.length == 0) {
-                        // console.log("response from payload is empty");
-
                         res.json(payload.ITEMS);
                     }
 
@@ -342,12 +259,7 @@ app.post("/new_items", function(req, res) {
 
                     for (i = 0; i < payload.ITEMS.length; i++) {
                         if (payload.ITEMS[i].imdbid) {
-                            // console.log(
-                            //     "payload.ITEMS[i].imdbid LINE 229--->",
-                            //     payload.ITEMS[i].imdbid
-                            // );
-
-                            /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
+                            ///////////////////////
                             let netflixId = payload.ITEMS[i].netflixid;
 
                             let movieId = payload.ITEMS[i].imdbid;
@@ -367,11 +279,6 @@ app.post("/new_items", function(req, res) {
                                     if (payload.imdbRating == "N/A") {
                                         payload.imdbRating = 0;
                                     }
-
-                                    // console.log(
-                                    //     "payload for sencon api new",
-                                    //     payload
-                                    // );
 
                                     const type_payload = payload.Type;
                                     const type =
@@ -397,10 +304,6 @@ app.post("/new_items", function(req, res) {
                                             db.getNewInfo(netflixId)
                                                 .then(results => {
                                                     queryCounter++;
-                                                    // console.log(
-                                                    //     "number of movies",
-                                                    //     moviesCount
-                                                    // );
                                                     moviesPayload.push(
                                                         results.rows[0]
                                                     );
@@ -409,9 +312,6 @@ app.post("/new_items", function(req, res) {
                                                         queryCounter ==
                                                         moviesCount
                                                     ) {
-                                                        // console.log(
-                                                        //     `queryCounter = moviesCount`
-                                                        // );
                                                         res.json(moviesPayload);
                                                     }
                                                 })
@@ -481,10 +381,10 @@ app.post("/leaving_items", function(req, res) {
 
                     for (i = 0; i < payload.ITEMS.length; i++) {
                         if (payload.ITEMS[i].imdbid) {
-                            /////////////////////// IF I DECLARE NETFLIXID OUTSIDE IT DOESN WORK WHY???
+                            ///////////////////////
                             let netflixId = payload.ITEMS[i].netflixid;
                             leaving = payload.ITEMS[i].unogsdate;
-                            /////////////////////// IF I DECLARE movieId OUTSIDE IT DOESN WORK WHY???
+                            ///////////////////////
                             let movieId = payload.ITEMS[i].imdbid;
                             //      Parameters for ImdB API
                             param2 = {
@@ -543,10 +443,6 @@ app.post("/leaving_items", function(req, res) {
                                                         queryCounter ==
                                                         moviesCount
                                                     ) {
-                                                        // console.log(
-                                                        //     `queryCounter = moviesCount`
-                                                        // );
-
                                                         res.json(moviesPayload);
                                                     }
                                                 })
@@ -578,21 +474,6 @@ app.post("/leaving_items", function(req, res) {
             console.log("Error at deleting leaving_items related table", err);
         });
 });
-
-// app.get("/logout", (req, res) => {
-//     req.session = null;
-//     res.redirect("/");
-// });
-
-// app.get("/user", (req, res) => {
-//     db.getUserInfo(req.session.usersId)
-//         .then(results => {
-//             res.json(results.rows);
-//         })
-//         .catch(err => {
-//             console.log("Error at the getUserInfo Query", err);
-//         });
-// });
 
 app.get("/welcome", function(req, res) {
     if (req.session.usersId) {
