@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import New_item from "./new_item";
-// import { log } from "util";
+import MovieCard from "./MovieCard";
 
 class New extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
 
     render() {
-        // console.log("this.props at new", this.props);
-
         return (
             <div className="resultsContainer">
                 {this.props.loading && (
@@ -25,9 +18,9 @@ class New extends Component {
 
                 {!!this.props.dataNew &&
                     this.props.dataNew.map(newItem => (
-                        <New_item
+                        <MovieCard
                             key={newItem.imbdid}
-                            netflixid={newItem.netflixid}
+                            netflixId={newItem.netflixid}
                             poster={newItem.poster}
                             title={newItem.title}
                             type={newItem.type}
@@ -35,7 +28,7 @@ class New extends Component {
                             genre={newItem.genre}
                             country={newItem.country}
                             year={newItem.year}
-                            imdb_rating={newItem.imdb_rating}
+                            imdbRating={newItem.imdb_rating}
                             plot={newItem.plot}
                             actors={newItem.actors}
                             language={newItem.language}
