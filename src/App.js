@@ -13,20 +13,19 @@ class App extends Component {
             days1: 1,
             days2: 1,
             loading: false,
-            no_results: false,
-            menu: false
+            noResults: false,
+            menu: false,
+            newItems: []
         };
-        this.menu = this.menu.bind(this);
+        this.toggleMenu = this.toggleMenu.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.searchNew = this.searchNew.bind(this);
         this.searchLeaving = this.searchLeaving.bind(this);
         this.searchNewSeasons = this.searchNewSeasons.bind(this);
     }
 
-    menu() {
-        this.state.menu
-            ? this.setState({ menu: false })
-            : this.setState({ menu: true });
+    toggleMenu() {
+        this.setState({ menu: !this.state.menu });
     }
 
     handleChange(e) {
@@ -34,46 +33,38 @@ class App extends Component {
     }
 
     searchNew() {
-        this.menu();
-        // console.log("this.state.days1", this.state.days1);
-        this.setState({ dataNew: [], loading: true, no_results: false });
+        this.toggleMenu();
+        this.setState({ newItems: [], loading: true, noResults: false });
         axios.post("/new_items", { days1: this.state.days1 }).then(response => {
-            // console.log("response from backend for new", response.data);
             if (!response.data.length) {
-                this.setState({ no_results: true });
+                this.setState({ noResults: true });
             }
-            this.setState({ dataNew: response.data, loading: false });
+            this.setState({ newItems: response.data, loading: false });
         });
     }
 
     searchLeaving() {
-        this.menu();
-        this.setState({ dataNew: [], loading: true });
+        this.toggleMenu();
+        this.setState({ newItems: [], loading: true });
         axios.post("/leaving_items").then(response => {
-            // console.log("response from backend for leaving", response.data);
-            this.setState({ dataNew: response.data, loading: false });
+            this.setState({ newItems: response.data, loading: false });
         });
     }
 
     searchNewSeasons() {
-        this.menu();
-        // console.log("this.state.days2", this.state.days2);
-        this.setState({ dataNew: [], loading: true, no_results: false });
+        this.toggleMenu();
+        this.setState({ newItems: [], loading: true, noResults: false });
         axios
             .post("/new_seasons_items", { days2: this.state.days2 })
             .then(response => {
-                // console.log("response from backend", response.data);
                 if (!response.data.length) {
-                    this.setState({ no_results: true });
+                    this.setState({ noResults: true });
                 }
-                this.setState({ dataNew: response.data, loading: false });
+                this.setState({ newItems: response.data, loading: false });
             });
     }
 
     render() {
-        // console.log("this.state at App", this.state);
-        // console.log("this.state at App ", this.state);
-
         return (
             <React.Fragment>
                 <BrowserRouter>
@@ -104,7 +95,7 @@ class App extends Component {
                                                         days1: 1,
                                                         days2: 1
                                                     });
-                                                    this.menu();
+                                                    this.toggleMenu();
                                                 }}
                                             />
                                         </div>
@@ -115,11 +106,9 @@ class App extends Component {
                                         render={() => (
                                             <New
                                                 days1={this.state.days1}
-                                                dataNew={this.state.dataNew}
+                                                dataNew={this.state.newItems}
                                                 loading={this.state.loading}
-                                                noResults={
-                                                    this.state.no_results
-                                                }
+                                                noResults={this.state.noResults}
                                             />
                                         )}
                                     />
@@ -127,7 +116,7 @@ class App extends Component {
                                         path="/leaving"
                                         render={() => (
                                             <Leaving
-                                                dataNew={this.state.dataNew}
+                                                dataNew={this.state.newItems}
                                                 loading={this.state.loading}
                                             />
                                         )}
@@ -137,11 +126,9 @@ class App extends Component {
                                         render={() => (
                                             <New_seasons
                                                 days2={this.state.days2}
-                                                dataNew={this.state.dataNew}
+                                                dataNew={this.state.newItems}
                                                 loading={this.state.loading}
-                                                noResults={
-                                                    this.state.no_results
-                                                }
+                                                noResults={this.state.noResults}
                                             />
                                         )}
                                     />
@@ -154,36 +141,5 @@ class App extends Component {
         );
     }
 }
-{
-    /* 
-<div
-    onMouseOver={() => this.setState({ bool: true })}
-    onMouseOut={() => this.setState({ bool: false })}
->
-    {this.state.bool ? (
-        <span>[OPTION1] show after onMouseEnter</span>
-    ) : (
-        <div>[OPTION2] show after onMouseLeave</div>
-    )}
-</div>; */
-}
 
 export default App;
-
-{
-    /* <BrowserRouter>
-<Route exact path="/new" render={() => <New />} />
-<Route exact path="/leaving" render={() => <Leaving />} />
-<Route
-    exact
-    path="/newseasons"
-    render={() => <New_seasons />}
-/>
-</BrowserRouter> */
-}
-
-{
-    /* <Link to={`/`}>
-    <p className="menuHeader">Profile</p>
-</Link>; */
-}
