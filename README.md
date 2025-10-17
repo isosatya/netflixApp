@@ -115,5 +115,5 @@ netflixApp/
 - **Backend**: Node.js/Express server
 - **Database**: PostgreSQL
 - **Build System**: Webpack with Babel
-- **APIs**: Netflix API (unogs) + IMDb API
+- **APIs**: Netflix API (unogs - unofficial Netflix online global search) + IMDb API
 - **Styling**: CSS with Netflix-inspired design
